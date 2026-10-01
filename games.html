@@ -1,710 +1,993 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0">
-
-<title>Nightfall — Games</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nightfall · Games</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
+<body>
 
-<body class="page">
+<div class="page">
 
-<div class="page-shell">
+<header class="topbar page-header">
+  <a class="brand" href="index.html">nightfall</a>
 
-
-<header class="page-header">
-
-<a href="index.html" class="logo">
-Nightfall
-</a>
-
-<a href="index.html" class="back">
-back home
-</a>
-
+  <nav>
+    <a href="games.html">games</a>
+    <a href="videos.html">watch</a>
+    <a href="facts.html">facts</a>
+    <a href="little.html">little things</a>
+    <a href="things.html">things</a>
+    <a href="settings.html">settings</a>
+  </nav>
 </header>
 
+<h1 class="page-title">the arcade</h1>
 
-<h1 class="page-title">
-Games
-</h1>
-
-<p class="page-subtitle">
-Actual games. No fake “AI game” buttons.
+<p class="sub">
+Actual games. Scores stay in your browser, so you can keep coming back
+and try to beat yourself.
 </p>
 
-
-<div class="section-title">
-2048
+<div class="game-tabs">
+  <button class="active" data-game="g2048">2048</button>
+  <button data-game="gbreak">breakout</button>
+  <button data-game="gsnake">snake</button>
+  <button data-game="gword">word five</button>
+  <button data-game="gmemory">memory</button>
 </div>
 
 
-<div class="game">
+<!-- 2048 -->
 
-<div class="game-top">
+<section class="panel game active" id="g2048">
 
-<div class="game-title">
-2048
+<div class="scorebar">
+  <span>Arrow keys / WASD</span>
+  <strong id="score2048">0</strong>
 </div>
 
-<div class="game-score">
-score:
-<span id="score">0</span>
+<div id="board2048"></div>
+
+<div class="row" style="justify-content:center">
+  <button id="new2048">new game</button>
 </div>
 
+</section>
+
+
+<!-- BREAKOUT -->
+
+<section class="panel game" id="gbreak">
+
+<div class="scorebar">
+  <span>← → or mouse</span>
+  <strong id="breakScore">0</strong>
 </div>
 
-
-<canvas
-id="board"
-width="600"
-height="600">
-</canvas>
-
-
-<div class="game-help">
-Use arrow keys. On mobile, swipe.
+<div class="game-stage canvas-wrap">
+  <canvas id="breakCanvas" width="700" height="400"></canvas>
 </div>
 
-<br>
-
-<button
-class="button"
-onclick="newGame()">
-
-new game
-
-</button>
-
+<div class="row">
+  <button id="breakStart">start / restart</button>
 </div>
 
+</section>
 
 
-<div class="section-title">
-Night Drive
+<!-- SNAKE -->
+
+<section class="panel game" id="gsnake">
+
+<div class="scorebar">
+  <span>Arrow keys / WASD</span>
+  <strong id="snakeScore">0</strong>
 </div>
 
-
-<div class="game">
-
-<div class="game-top">
-
-<div class="game-title">
-Night Drive
+<div class="game-stage canvas-wrap">
+  <canvas id="snakeCanvas" width="420" height="420"></canvas>
 </div>
 
-<div class="game-score">
-distance:
-<span id="distance">0</span>
+<div class="row">
+  <button id="snakeStart">start / restart</button>
 </div>
 
+</section>
+
+
+<!-- WORD -->
+
+<section class="panel game" id="gword">
+
+<div class="scorebar">
+  <span>Guess the five-letter word</span>
+  <strong id="wordScore">0</strong>
 </div>
 
+<div id="words" class="words"></div>
 
-<canvas
-id="drive"
-width="800"
-height="450">
-</canvas>
-
-
-<div class="game-help">
-Move with ← → or A / D. Avoid the cars.
+<div class="row" style="max-width:350px;margin:auto">
+  <input id="wordInput" maxlength="5" placeholder="type a word">
+  <button id="wordGuess">guess</button>
+  <button id="wordNew">new</button>
 </div>
 
-<br>
+<p id="wordMsg" class="tiny" style="text-align:center"></p>
 
-<button
-class="button"
-onclick="startDrive()">
+</section>
 
-start drive
 
-</button>
+<!-- MEMORY -->
 
+<section class="panel game" id="gmemory">
+
+<div class="scorebar">
+  <span>Find every pair</span>
+  <strong id="memMoves">0 moves</strong>
 </div>
 
+<div id="memory" class="memory"></div>
 
+<div class="row" style="justify-content:center">
+  <button id="memNew">shuffle</button>
 </div>
 
+</section>
+
+</div>
 
 <script src="script.js"></script>
 
-
 <script>
 
-/* =====================
+/* GAME TABS */
+
+document.querySelectorAll(".game-tabs button").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".game-tabs button")
+      .forEach(x => x.classList.remove("active"));
+
+    document
+      .querySelectorAll(".game")
+      .forEach(x => x.classList.remove("active"));
+
+    button.classList.add("active");
+
+    document
+      .getElementById(button.dataset.game)
+      .classList.add("active");
+
+  });
+
+});
+
+
+/* =========================
    2048
-===================== */
+========================= */
 
-const canvas =
-document.getElementById("board");
+let grid = [];
+let score = 0;
 
-const ctx =
-canvas.getContext("2d");
+function emptyGrid() {
+  return [
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0]
+  ];
+}
 
-let board;
-let score;
+function spawn2048() {
 
+  const empty = [];
 
-function newGame(){
+  grid.forEach((row,y) => {
 
-board =
-Array.from(
-{length:4},
-() => Array(4).fill(0)
-);
+    row.forEach((value,x) => {
 
-score = 0;
+      if (!value) {
+        empty.push([y,x]);
+      }
 
-addTile();
-addTile();
+    });
 
-draw();
+  });
+
+  if (!empty.length) return;
+
+  const [y,x] =
+    empty[Math.floor(Math.random() * empty.length)];
+
+  grid[y][x] =
+    Math.random() < .9 ? 2 : 4;
+}
+
+function draw2048() {
+
+  const board =
+    document.getElementById("board2048");
+
+  board.innerHTML = "";
+
+  grid.flat().forEach(value => {
+
+    const tile =
+      document.createElement("div");
+
+    tile.className = "tile";
+    tile.textContent = value || "";
+
+    board.appendChild(tile);
+
+  });
+
+  document.getElementById("score2048").textContent = score;
+}
+
+function slide(row) {
+
+  row = row.filter(Boolean);
+
+  for (let i = 0; i < row.length - 1; i++) {
+
+    if (row[i] === row[i + 1]) {
+
+      row[i] *= 2;
+      score += row[i];
+
+      row[i + 1] = 0;
+    }
+
+  }
+
+  row = row.filter(Boolean);
+
+  while (row.length < 4) {
+    row.push(0);
+  }
+
+  return row;
+}
+
+function move2048(direction) {
+
+  const old =
+    JSON.stringify(grid);
+
+  if (direction === "left") {
+    grid = grid.map(slide);
+  }
+
+  if (direction === "right") {
+
+    grid =
+      grid.map(row =>
+        slide([...row].reverse()).reverse()
+      );
+
+  }
+
+  if (direction === "up") {
+
+    for (let x=0;x<4;x++) {
+
+      let column =
+        grid.map(row => row[x]);
+
+      column = slide(column);
+
+      for (let y=0;y<4;y++) {
+        grid[y][x] = column[y];
+      }
+
+    }
+
+  }
+
+  if (direction === "down") {
+
+    for (let x=0;x<4;x++) {
+
+      let column =
+        grid.map(row => row[x]).reverse();
+
+      column =
+        slide(column).reverse();
+
+      for (let y=0;y<4;y++) {
+        grid[y][x] = column[y];
+      }
+
+    }
+
+  }
+
+  if (old !== JSON.stringify(grid)) {
+
+    spawn2048();
+    draw2048();
+
+  }
 
 }
 
+function new2048() {
 
-function empty(){
+  grid = emptyGrid();
+  score = 0;
 
-const cells=[];
+  spawn2048();
+  spawn2048();
 
-for(let r=0;r<4;r++){
-
-for(let c=0;c<4;c++){
-
-if(board[r][c]===0){
-
-cells.push([r,c]);
-
+  draw2048();
 }
 
+new2048();
+
+document
+  .getElementById("new2048")
+  .onclick = new2048;
+
+
+document.addEventListener("keydown", event => {
+
+  const keys = {
+    ArrowLeft:"left",
+    a:"left",
+
+    ArrowRight:"right",
+    d:"right",
+
+    ArrowUp:"up",
+    w:"up",
+
+    ArrowDown:"down",
+    s:"down"
+  };
+
+  const direction =
+    keys[event.key];
+
+  if (direction) {
+    move2048(direction);
+  }
+
+});
+
+
+/* =========================
+   BREAKOUT
+========================= */
+
+const breakCanvas =
+  document.getElementById("breakCanvas");
+
+const bx =
+  breakCanvas.getContext("2d");
+
+let breakout = null;
+
+function startBreakout() {
+
+  breakout = {
+
+    x:350,
+    y:345,
+
+    vx:4,
+    vy:-4,
+
+    paddle:300,
+
+    score:0,
+
+    blocks:
+      Array.from(
+        {length:5},
+        (_,row) =>
+          Array.from(
+            {length:9},
+            (_,col) => ({
+              x:30 + col * 71,
+              y:35 + row * 25,
+              alive:true
+            })
+          )
+      )
+
+  };
+
+  requestAnimationFrame(breakoutLoop);
 }
 
+function breakoutLoop() {
+
+  if (!breakout) return;
+
+  bx.clearRect(
+    0,
+    0,
+    700,
+    400
+  );
+
+  bx.fillStyle="#dce9e6";
+
+  bx.fillRect(
+    breakout.paddle,
+    375,
+    100,
+    8
+  );
+
+  breakout.blocks
+    .flat()
+    .forEach(block => {
+
+      if (!block.alive) return;
+
+      bx.fillStyle="#668b85";
+
+      bx.fillRect(
+        block.x,
+        block.y,
+        62,
+        17
+      );
+
+    });
+
+  bx.beginPath();
+
+  bx.arc(
+    breakout.x,
+    breakout.y,
+    6,
+    0,
+    Math.PI * 2
+  );
+
+  bx.fillStyle="#fff";
+  bx.fill();
+
+  breakout.x += breakout.vx;
+  breakout.y += breakout.vy;
+
+  if (
+    breakout.x < 6 ||
+    breakout.x > 694
+  ) {
+    breakout.vx *= -1;
+  }
+
+  if (breakout.y < 6) {
+    breakout.vy *= -1;
+  }
+
+  if (
+    breakout.y > 367 &&
+    breakout.x > breakout.paddle &&
+    breakout.x < breakout.paddle + 100
+  ) {
+    breakout.vy = -Math.abs(breakout.vy);
+  }
+
+  for (const block of breakout.blocks.flat()) {
+
+    if (
+      block.alive &&
+      breakout.x > block.x &&
+      breakout.x < block.x + 62 &&
+      breakout.y > block.y &&
+      breakout.y < block.y + 17
+    ) {
+
+      block.alive = false;
+      breakout.vy *= -1;
+      breakout.score++;
+
+      document.getElementById(
+        "breakScore"
+      ).textContent =
+        breakout.score;
+    }
+
+  }
+
+  if (breakout.y > 410) {
+    breakout = null;
+    return;
+  }
+
+  requestAnimationFrame(breakoutLoop);
 }
 
-return cells;
+document
+  .getElementById("breakStart")
+  .onclick = startBreakout;
 
+
+document.addEventListener("keydown", event => {
+
+  if (!breakout) return;
+
+  if (event.key === "ArrowLeft") {
+    breakout.paddle =
+      Math.max(
+        0,
+        breakout.paddle - 30
+      );
+  }
+
+  if (event.key === "ArrowRight") {
+    breakout.paddle =
+      Math.min(
+        600,
+        breakout.paddle + 30
+      );
+  }
+
+});
+
+
+/* =========================
+   SNAKE
+========================= */
+
+const snakeCanvas =
+  document.getElementById("snakeCanvas");
+
+const sx =
+  snakeCanvas.getContext("2d");
+
+let snake = null;
+
+function startSnake() {
+
+  snake = {
+
+    body:[
+      [10,10],
+      [9,10],
+      [8,10]
+    ],
+
+    direction:[1,0],
+    next:[1,0],
+
+    food:[
+      15,
+      15
+    ],
+
+    score:0
+
+  };
+
+  snakeLoop();
 }
 
+function snakeLoop() {
 
-function addTile(){
+  if (!snake) return;
 
-const cells=empty();
+  snake.direction =
+    snake.next;
 
-if(!cells.length) return;
+  const head = [
 
-const [r,c] =
-cells[
-Math.floor(
-Math.random()*cells.length
-)
+    snake.body[0][0] +
+      snake.direction[0],
+
+    snake.body[0][1] +
+      snake.direction[1]
+
+  ];
+
+  if (
+    head[0] < 0 ||
+    head[0] >= 21 ||
+    head[1] < 0 ||
+    head[1] >= 21 ||
+    snake.body.some(
+      part =>
+        part[0] === head[0] &&
+        part[1] === head[1]
+    )
+  ) {
+
+    snake = null;
+    return;
+
+  }
+
+  snake.body.unshift(head);
+
+  if (
+    head[0] === snake.food[0] &&
+    head[1] === snake.food[1]
+  ) {
+
+    snake.score++;
+
+    document.getElementById(
+      "snakeScore"
+    ).textContent =
+      snake.score;
+
+    do {
+
+      snake.food = [
+        Math.floor(Math.random()*21),
+        Math.floor(Math.random()*21)
+      ];
+
+    } while (
+      snake.body.some(
+        part =>
+          part[0] === snake.food[0] &&
+          part[1] === snake.food[1]
+      )
+    );
+
+  } else {
+
+    snake.body.pop();
+
+  }
+
+  sx.clearRect(
+    0,
+    0,
+    420,
+    420
+  );
+
+  sx.fillStyle="#091418";
+
+  sx.fillRect(
+    0,
+    0,
+    420,
+    420
+  );
+
+  sx.fillStyle="#dceeea";
+
+  sx.fillRect(
+    snake.food[1]*20,
+    snake.food[0]*20,
+    19,
+    19
+  );
+
+  snake.body.forEach((part,index) => {
+
+    sx.fillStyle =
+      index === 0
+        ? "#edf5f2"
+        : "#648c86";
+
+    sx.fillRect(
+      part[1]*20,
+      part[0]*20,
+      19,
+      19
+    );
+
+  });
+
+  setTimeout(
+    snakeLoop,
+    95
+  );
+}
+
+document
+  .getElementById("snakeStart")
+  .onclick = startSnake;
+
+
+document.addEventListener("keydown", event => {
+
+  if (!snake) return;
+
+  const directions = {
+
+    ArrowUp:[-1,0],
+    w:[-1,0],
+
+    ArrowDown:[1,0],
+    s:[1,0],
+
+    ArrowLeft:[0,-1],
+    a:[0,-1],
+
+    ArrowRight:[0,1],
+    d:[0,1]
+
+  };
+
+  const next =
+    directions[event.key];
+
+  if (!next) return;
+
+  if (
+    next[0] === -snake.direction[0] &&
+    next[1] === -snake.direction[1]
+  ) return;
+
+  snake.next = next;
+
+});
+
+
+/* =========================
+   WORD FIVE
+========================= */
+
+const words = [
+"APPLE","CLOUD","CRANE","DREAM",
+"FROST","LIGHT","NIGHT","OCEAN",
+"PIANO","RIVER","SMILE","STARS",
+"STONE","TRAIN","WATER","WORLD",
+"HOUSE","MUSIC","PLANT","QUIET"
 ];
 
-board[r][c] =
-Math.random()<.9 ? 2 : 4;
+let answer="";
+let tries=0;
+
+function newWord() {
+
+  answer =
+    words[
+      Math.floor(
+        Math.random()*words.length
+      )
+    ];
+
+  tries=0;
+
+  const board =
+    document.getElementById("words");
+
+  board.innerHTML="";
+
+  for(let i=0;i<6;i++) {
+
+    for(let j=0;j<5;j++) {
+
+      const cell =
+        document.createElement("div");
+
+      cell.className="letter";
+      cell.id=`letter-${i}-${j}`;
+
+      board.appendChild(cell);
+
+    }
+
+  }
+
+  document.getElementById(
+    "wordMsg"
+  ).textContent="";
+
+  document.getElementById(
+    "wordInput"
+  ).value="";
 
 }
 
+function guessWord() {
 
-function merge(row){
+  const input =
+    document.getElementById(
+      "wordInput"
+    );
 
-let a =
-row.filter(Boolean);
+  const guess =
+    input.value
+      .trim()
+      .toUpperCase();
 
-let result=[];
+  if (guess.length !== 5) {
+    document.getElementById(
+      "wordMsg"
+    ).textContent =
+      "five letters.";
+    return;
+  }
 
-for(let i=0;i<a.length;i++){
+  if (!words.includes(guess)) {
+    document.getElementById(
+      "wordMsg"
+    ).textContent =
+      "try one of the words in the game.";
+    return;
+  }
 
-if(a[i]===a[i+1]){
+  for(let i=0;i<5;i++) {
 
-result.push(a[i]*2);
+    document.getElementById(
+      `letter-${tries}-${i}`
+    ).textContent =
+      guess[i];
 
-score += a[i]*2;
+  }
 
-i++;
+  tries++;
 
-}else{
+  if(guess === answer) {
 
-result.push(a[i]);
+    document.getElementById(
+      "wordMsg"
+    ).textContent =
+      "you got it ✦";
 
-}
+  }
 
-}
+  else if(tries >= 6) {
 
-while(result.length<4)
-result.push(0);
+    document.getElementById(
+      "wordMsg"
+    ).textContent =
+      `the word was ${answer}`;
 
-return result;
+  }
 
-}
+  else {
 
+    document.getElementById(
+      "wordMsg"
+    ).textContent =
+      "nope. keep going.";
 
-function moveLeft(){
-
-let old =
-JSON.stringify(board);
-
-board =
-board.map(row=>merge(row));
-
-if(JSON.stringify(board)!==old)
-addTile();
-
-draw();
-
-}
-
-
-function moveRight(){
-
-let old =
-JSON.stringify(board);
-
-board =
-board.map(row=>
-merge([...row].reverse())
-.reverse()
-);
-
-if(JSON.stringify(board)!==old)
-addTile();
-
-draw();
-
-}
-
-
-function moveUp(){
-
-let old =
-JSON.stringify(board);
-
-let next =
-Array.from(
-{length:4},
-()=>Array(4).fill(0)
-);
-
-for(let c=0;c<4;c++){
-
-let column =
-board.map(row=>row[c]);
-
-let merged =
-merge(column);
-
-for(let r=0;r<4;r++){
-
-next[r][c]=merged[r];
+  }
 
 }
 
-}
+document
+  .getElementById("wordGuess")
+  .onclick = guessWord;
 
-board=next;
+document
+  .getElementById("wordNew")
+  .onclick = newWord;
 
-if(JSON.stringify(board)!==old)
-addTile();
+document
+  .getElementById("wordInput")
+  .addEventListener(
+    "keydown",
+    e => {
+      if(e.key==="Enter")
+        guessWord();
+    }
+  );
 
-draw();
-
-}
-
-
-function moveDown(){
-
-let old =
-JSON.stringify(board);
-
-let next =
-Array.from(
-{length:4},
-()=>Array(4).fill(0)
-);
-
-for(let c=0;c<4;c++){
-
-let column =
-board.map(row=>row[c]);
-
-let merged =
-merge(column.reverse())
-.reverse();
-
-for(let r=0;r<4;r++){
-
-next[r][c]=merged[r];
-
-}
-
-}
-
-board=next;
-
-if(JSON.stringify(board)!==old)
-addTile();
-
-draw();
-
-}
+newWord();
 
 
-function draw(){
+/* =========================
+   MEMORY
+========================= */
 
-ctx.clearRect(
-0,
-0,
-600,
-600
-);
+const icons = [
+  "✦","☾","☁","❄",
+  "♡","✿","★","☼"
+];
 
-ctx.fillStyle="#101619";
+let firstCard=null;
+let memoryLock=false;
+let memoryMoves=0;
 
-ctx.fillRect(
-0,
-0,
-600,
-600
-);
+function newMemory() {
 
-const size=150;
+  const deck =
+    [...icons,...icons]
+      .sort(() => Math.random()-.5);
 
-for(let r=0;r<4;r++){
+  firstCard=null;
+  memoryLock=false;
+  memoryMoves=0;
 
-for(let c=0;c<4;c++){
+  document.getElementById(
+    "memMoves"
+  ).textContent="0 moves";
 
-let value=board[r][c];
+  const memory =
+    document.getElementById(
+      "memory"
+    );
 
-ctx.fillStyle =
-value
-? "rgba(230,238,235,.15)"
-: "rgba(255,255,255,.045)";
+  memory.innerHTML="";
 
-ctx.fillRect(
-c*size+7,
-r*size+7,
-size-14,
-size-14
-);
+  deck.forEach(icon => {
 
-if(value){
+    const card =
+      document.createElement("button");
 
-ctx.fillStyle="#edf2ef";
+    card.className="card";
 
-ctx.font =
-value>999
-? "32px sans-serif"
-: "44px sans-serif";
+    card.dataset.icon=icon;
 
-ctx.textAlign="center";
+    card.onclick=() => flipCard(card);
 
-ctx.textBaseline="middle";
+    memory.appendChild(card);
 
-ctx.fillText(
-value,
-c*size+size/2,
-r*size+size/2
-);
+  });
 
 }
 
-}
+function flipCard(card) {
+
+  if(
+    memoryLock ||
+    card.classList.contains("open")
+  ) return;
+
+  card.classList.add("open");
+
+  card.textContent =
+    card.dataset.icon;
+
+  if(!firstCard) {
+
+    firstCard=card;
+    return;
+
+  }
+
+  memoryMoves++;
+
+  document.getElementById(
+    "memMoves"
+  ).textContent =
+    `${memoryMoves} moves`;
+
+  if(
+    firstCard.dataset.icon ===
+    card.dataset.icon
+  ) {
+
+    firstCard=null;
+
+  }
+
+  else {
+
+    memoryLock=true;
+
+    setTimeout(() => {
+
+      firstCard.textContent="";
+      card.textContent="";
+
+      firstCard.classList.remove("open");
+      card.classList.remove("open");
+
+      firstCard=null;
+      memoryLock=false;
+
+    },550);
+
+  }
 
 }
 
-document.getElementById("score")
-.textContent=score;
-
-}
-
-
-window.addEventListener(
-"keydown",
-event=>{
-
-if(event.key==="ArrowLeft")
-moveLeft();
-
-if(event.key==="ArrowRight")
-moveRight();
-
-if(event.key==="ArrowUp")
-moveUp();
-
-if(event.key==="ArrowDown")
-moveDown();
-
-}
-);
-
-
-/* =====================
-   NIGHT DRIVE
-===================== */
-
-const drive =
-document.getElementById("drive");
-
-const dctx =
-drive.getContext("2d");
-
-let driving=false;
-
-let carX=380;
-
-let cars=[];
-
-let distance=0;
-
-let lastTime=0;
-
-let keys={};
-
-
-function startDrive(){
-
-driving=true;
-
-carX=380;
-
-cars=[];
-
-distance=0;
-
-lastTime=
-performance.now();
-
-requestAnimationFrame(
-driveLoop
-);
-
-}
-
-
-function driveLoop(time){
-
-if(!driving) return;
-
-const delta =
-Math.min(
-.04,
-(time-lastTime)/1000
-);
-
-lastTime=time;
-
-distance +=
-delta*10;
-
-document.getElementById(
-"distance"
-).textContent=
-Math.floor(distance);
-
-
-if(keys["ArrowLeft"]||keys["a"]){
-
-carX -=
-260*delta;
-
-}
-
-if(keys["ArrowRight"]||keys["d"]){
-
-carX +=
-260*delta;
-
-}
-
-carX =
-Math.max(
-175,
-Math.min(
-585,
-carX
-)
-);
-
-
-if(Math.random()<.025){
-
-cars.push({
-
-x:
-190+
-Math.random()*390,
-
-y:-70,
-
-speed:
-170+
-distance*2
-
-});
-
-}
-
-
-cars.forEach(car=>{
-car.y += car.speed*delta;
-});
-
-
-cars =
-cars.filter(
-car=>car.y<500
-);
-
-
-for(const car of cars){
-
-if(
-
-carX < car.x+42 &&
-carX+40 > car.x &&
-410 < car.y+65 &&
-472 > car.y
-
-){
-
-driving=false;
-
-drawDrive();
-
-return;
-
-}
-
-}
-
-
-drawDrive();
-
-requestAnimationFrame(
-driveLoop
-);
-
-}
-
-
-function drawDrive(){
-
-dctx.clearRect(
-0,
-0,
-800,
-450
-);
-
-
-dctx.fillStyle="#080d0f";
-
-dctx.fillRect(
-0,
-0,
-800,
-450
-);
-
-
-/* road */
-
-dctx.fillStyle="#182126";
-
-dctx.fillRect(
-150,
-0,
-500,
-450
-);
-
-
-/* lane */
-
-dctx.strokeStyle=
-"rgba(255,255,255,.18)";
-
-dctx.lineWidth=3;
-
-dctx.setLineDash([
-24,
-25
-]);
-
-dctx.beginPath();
-
-dctx.moveTo(
-400,
-0
-);
-
-dctx.lineTo(
-400,
-450
-);
-
-dctx.stroke();
-
-dctx.setLineDash([]);
-
-
-/* player */
-
-dctx.fillStyle="#dfe8e3";
-
-dctx.fillRect(
-carX,
-410,
-40,
-62
-);
-
-
-/* traffic */
-
-cars.forEach(car=>{
-
-dctx.fillStyle="#647276";
-
-dctx.fillRect(
-car.x,
-car.y,
-42,
-65
-);
-
-});
-
-}
-
-
-window.addEventListener(
-"keydown",
-e=>{
-keys[e.key]=true;
-}
-);
-
-
-window.addEventListener(
-"keyup",
-e=>{
-keys[e.key]=false;
-}
-);
-
-
-newGame();
+document
+  .getElementById("memNew")
+  .onclick = newMemory;
+
+newMemory();
 
 </script>
 
