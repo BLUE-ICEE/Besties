@@ -1,107 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nightfall</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-<header>
-  <a class="logo" href="index.html">Nightfall</a>
+<body class="home">
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="games.html">Games</a>
-    <a href="videos.html">Watch</a>
-    <a href="facts.html">Rabbit Holes</a>
-    <a href="little.html">Little Things</a>
-    <a href="chat.html">Friends</a>
-    <a href="settings.html">Settings</a>
-  </nav>
-</header>
+  <div class="background"></div>
+  <div class="darken"></div>
 
-<main>
-  <section class="hero">
-    <small id="date"></small>
+  <header>
+    <a href="index.html" class="logo">Nightfall</a>
 
-    <h1>Welcome to <i>Nightfall.</i></h1>
+    <nav>
+      <a href="games.html">games</a>
+      <a href="videos.html">watch</a>
+      <a href="facts.html">things</a>
+      <a href="little.html">little things</a>
+      <a href="settings.html">settings</a>
+    </nav>
+  </header>
 
-    <p>
-      A cozy little corner for games, videos, strange facts,
-      tiny projects, and whatever sounds fun tonight.
-    </p>
+  <main class="home-content">
 
-    <a class="button dark" href="games.html">Play something</a>
-    <a class="button" href="videos.html">Put something on</a>
-  </section>
+    <div class="clock-area">
+      <div id="clock">10:03</div>
 
-  <section class="rooms">
+      <div id="date">Wednesday, September 30</div>
 
-    <a class="room big" href="games.html">
-      <small>01</small>
-      <h2>Games</h2>
-      <p>Real little games, not button simulators.</p>
-      <span class="arrow">↗</span>
-    </a>
-
-    <a class="room" href="videos.html">
-      <small>02</small>
-      <h2>Watch</h2>
-      <p>SKZ, space, ambience and rabbit holes.</p>
-      <span class="arrow">↗</span>
-    </a>
-
-    <a class="room" href="facts.html">
-      <small>03</small>
-      <h2>Rabbit Holes</h2>
-      <p>Oddly specific things worth knowing.</p>
-      <span class="arrow">↗</span>
-    </a>
-
-    <a class="room" href="little.html">
-      <small>04</small>
-      <h2>Little Things</h2>
-      <p>Timers, journal, challenges and more.</p>
-      <span class="arrow">↗</span>
-    </a>
-
-  </section>
-
-  <section class="bottom">
-
-    <div>
-      <small>FOR TONIGHT</small>
-      <h2 id="comfortLine">make yourself comfortable.</h2>
-      <div id="clock"></div>
+      <div class="timezone">
+        NEW YORK · EST / EDT
+      </div>
     </div>
 
-    <div>
-      <small>TINY LIST</small>
-      <h2>Three things</h2>
+    <div class="now-playing">
 
-      <label>
-        <input type="checkbox">
-        drink something
-      </label>
+      <div class="music-dot"></div>
 
-      <label>
-        <input type="checkbox">
-        do one fun thing
-      </label>
+      <div>
+        <div class="now-label">NOW PLAYING</div>
+        <div class="song">One Kiss</div>
+        <div class="artist">Calvin Harris · Dua Lipa</div>
+      </div>
 
-      <label>
-        <input type="checkbox">
-        help tomorrow-you
-      </label>
     </div>
 
-  </section>
-</main>
+  </main>
 
-<footer>Nightfall · made for wandering around</footer>
+  <div class="bottom">
+    <span>make yourself at home</span>
+    <button id="changeView">change view</button>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
+
 </body>
 </html>
