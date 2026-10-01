@@ -4,7 +4,64 @@ const facts = [
   ["Saturn could float in water.", "Saturn's average density is lower than water. You would just need an absolutely enormous bathtub.", "Planets"],
   ["Mars has blue sunsets.", "Fine dust in the Martian atmosphere scatters light differently from Earth's atmosphere, producing a bluish glow near sunset.", "Mars"],
   ["A million Earths could fit inside the Sun.", "The Sun's volume is roughly 1.3 million times Earth's volume.", "Sun"],
-  ["There are volcanoes on Io.", "Jupiter's moon Io is the most volcanically active world known in our solar system.", "Moons"],
+  ["There are volcanoes on Io.", "Jupiter's moon Io is the most volcanically activconst savedTheme =
+  localStorage.getItem("nightfall-theme") || "winter";
+
+document.body.dataset.theme = savedTheme;
+
+
+// Clock
+function updateClock() {
+  const clock = document.getElementById("clock");
+
+  if (clock) {
+    clock.textContent =
+      new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+  }
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+
+// Date
+const date = document.getElementById("date");
+
+if (date) {
+  date.textContent =
+    new Date().toLocaleDateString([], {
+      weekday: "long",
+      month: "long",
+      day: "numeric"
+    });
+}
+
+
+// Home comfort line
+const lines = [
+  "make yourself comfortable.",
+  "nothing here needs to be productive.",
+  "stay a while.",
+  "you can just wander.",
+  "one small thing at a time."
+];
+
+const comfort = document.getElementById("comfortLine");
+
+if (comfort) {
+  comfort.textContent =
+    lines[Math.floor(Math.random() * lines.length)];
+}
+
+
+// Theme changer
+function setTheme(themeName) {
+  document.body.dataset.theme = themeName;
+  localStorage.setItem("nightfall-theme", themeName);
+}e world known in our solar system.", "Moons"],
   ["Space is not completely silent.", "Sound needs a medium such as air, so ordinary sound waves don't travel through the vacuum of interplanetary space.", "Physics"],
   ["A teaspoon of neutron-star material would be ridiculously heavy.", "Neutron-star matter is extraordinarily dense; everyday analogies quickly become difficult to imagine.", "Stars"],
   ["Jupiter has a giant storm.", "The Great Red Spot is a long-lived storm system larger than Earth.", "Jupiter"],
