@@ -1,155 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nightfall — Rabbit Holes</title>
+<title>Nightfall · Facts</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-<a class="logo" href="index.html">Nightfall</a>
+<div class="page">
 
-<nav>
-<a href="index.html">Home</a>
-<a href="games.html">Games</a>
-<a href="videos.html">Watch</a>
-<a href="facts.html">Rabbit Holes</a>
-<a href="little.html">Little Things</a>
-<a href="chat.html">Friends</a>
-<a href="settings.html">Settings</a>
-</nav>
+<header class="topbar page-header">
+  <a class="brand" href="index.html">nightfall</a>
+
+  <nav>
+    <a href="games.html">games</a>
+    <a href="videos.html">watch</a>
+    <a href="facts.html">facts</a>
+    <a href="little.html">little things</a>
+    <a href="things.html">things</a>
+    <a href="settings.html">settings</a>
+  </nav>
 </header>
 
-<main>
+<h1 class="page-title">the fact shelf</h1>
 
-<section class="page-title">
-<small>RABBIT HOLES</small>
-
-<h1>Things that are oddly specific.</h1>
-
-<p>
-The kind of facts that make you stop and open another tab.
+<p class="sub">
+The weird, oddly-specific, “WAIT WHAT?” corner.
 </p>
-</section>
 
-<section class="facts">
+<div class="row" style="margin-bottom:20px">
+  <button id="randomFact">surprise me</button>
+  <button id="allFacts">show everything</button>
+</div>
 
-<article class="fact">
-<small>01</small>
-<b>Bananas are berries.</b>
-<p>
-Botanically, berries develop from one flower with one ovary.
-Strawberries don't fit that definition.
-</p>
-</article>
+<div id="facts" class="grid"></div>
 
-<article class="fact">
-<small>02</small>
-<b>Saturn could float.</b>
-<p>
-Its average density is lower than water.
-You'd just need a bathtub on an absurd scale.
-</p>
-</article>
-
-<article class="fact">
-<small>03</small>
-<b>Octopuses have three hearts.</b>
-<p>
-Two pump blood toward the gills and one pumps it around the body.
-</p>
-</article>
-
-<article class="fact">
-<small>04</small>
-<b>Honey lasts unusually long.</b>
-<p>
-Its low water content and acidity make it unusually resistant
-to microbial growth when stored properly.
-</p>
-</article>
-
-<article class="fact">
-<small>05</small>
-<b>A Venus day is longer than its year.</b>
-<p>
-Venus rotates so slowly that one rotation takes longer
-than one trip around the Sun.
-</p>
-</article>
-
-<article class="fact">
-<small>06</small>
-<b>Wombat poop is cube-shaped.</b>
-<p>
-The unusual shape forms inside the intestine.
-</p>
-</article>
-
-<article class="fact">
-<small>07</small>
-<b>Some turtles can breathe through their skin.</b>
-<p>
-Several species can absorb oxygen through specialized
-surfaces while underwater.
-</p>
-</article>
-
-<article class="fact">
-<small>08</small>
-<b>There are clouds in space.</b>
-<p>
-Interstellar clouds are huge regions of gas and dust
-where stars can eventually form.
-</p>
-</article>
-
-<article class="fact">
-<small>09</small>
-<b>Sharks are older than trees.</b>
-<p>
-Shark ancestors appear in the fossil record before
-modern forests evolved.
-</p>
-</article>
-
-<article class="fact">
-<small>10</small>
-<b>Some fungi glow.</b>
-<p>
-Bioluminescent fungi produce light through chemical reactions.
-</p>
-</article>
-
-<article class="fact">
-<small>11</small>
-<b>Water can boil and freeze at once.</b>
-<p>
-At its triple point, water can exist as solid, liquid
-and gas simultaneously.
-</p>
-</article>
-
-<article class="fact">
-<small>12</small>
-<b>Space phenomena can become sound.</b>
-<p>
-Scientists can translate measurements of plasma and
-other space phenomena into audio.
-</p>
-</article>
-
-</section>
-
-</main>
-
-<footer>Nightfall · go down a rabbit hole</footer>
+</div>
 
 <script src="script.js"></script>
+
+<script>
+
+const facts = [
+
+"On Venus, one rotation takes longer than one trip around the Sun.",
+"Saturn is less dense than water on average.",
+"Octopuses have three hearts.",
+"Bananas are botanically berries, while strawberries aren't true botanical berries.",
+"The smell after rain has a name: petrichor.",
+"Lightning can heat the surrounding air to temperatures hotter than the surface of the Sun.",
+"The Moon is slowly moving away from Earth by a few centimeters each year.",
+"Jupiter has the shortest day of any planet in our solar system.",
+"Uranus rotates at a dramatic tilt compared with most planets.",
+"Light from the Sun takes about eight minutes to reach Earth.",
+"The International Space Station circles Earth roughly every 90 minutes.",
+"Mercury's solar day lasts longer than its year.",
+"Some exoplanets orbit their stars in only a few Earth days.",
+"Black holes don't simply suck up everything around them; objects can orbit them.",
+"Neutron stars pack enormous amounts of matter into roughly city-sized objects.",
+"Saturn's rings are mostly made of countless pieces of ice and rocky material.",
+"Mars can have blue-looking sunsets because of the way dust scatters light.",
+"Earth is slightly wider around the equator than from pole to pole.",
+"Antarctica is technically a desert.",
+"Sharks existed before trees appeared in the fossil record.",
+"Jellyfish existed long before dinosaurs.",
+"A blue whale's heart can be roughly comparable in size to a small car.",
+"Butterflies have taste receptors on their feet.",
+"Some fungi produce their own light through bioluminescence.",
+"Some birds can sleep while keeping one side of their brain more alert.",
+"Koalas have fingerprints with patterns that can look surprisingly human-like.",
+"Sea otters sometimes hold hands while resting so they don't drift apart.",
+"Penguins have knees; they're simply hidden inside their body structure.",
+"A shrimp's heart is located in its head region.",
+"Some plants can chemically signal to nearby plants when they are damaged.",
+"Your bones are living tissue and continuously remodel themselves.",
+"Lightning can strike the same location repeatedly.",
+"Sound travels faster through water than through air.",
+"Snowflakes naturally develop six-fold symmetry because of the structure of ice crystals.",
+"Not every snowflake is an intricate six-pointed masterpiece; growth conditions matter.",
+"Earth's continents move only a few centimeters per year.",
+"Clouds can contain huge amounts of water despite looking almost weightless.",
+"Water can exist as solid, liquid and gas simultaneously at its triple point.",
+"Glass is an amorphous solid rather than a perfectly ordered crystal.",
+"Honey can stay edible for extremely long periods when properly sealed and stored.",
+"Crows can recognize individual human faces.",
+"Ravens can solve multi-step problems.",
+"Ants can form temporary bridges using their own bodies.",
+"Some frogs can survive partial freezing and later thaw.",
+"Some trees exchange resources through underground fungal networks.",
+"The Sahara has gone through much greener periods in Earth's climate history.",
+"Some cave ecosystems receive very little energy directly from sunlight.",
+"Earth's atmosphere is mostly nitrogen rather than oxygen.",
+"The visible surface of the Sun is called the photosphere.",
+"Earth's magnetic field helps deflect charged particles from the solar wind.",
+"Spacecraft can use gravity assists to alter their speed and direction.",
+"Most of Earth's oxygen was produced by photosynthetic organisms over immense spans of time.",
+"Your eyes can detect individual photons under carefully controlled conditions.",
+"Some birds migrate thousands of kilometers using several different navigation cues.",
+"Certain plants close their leaves when touched.",
+"Some mushrooms form huge underground networks even when the visible mushrooms look tiny.",
+"Some deep-sea animals produce light using chemical reactions.",
+"The deepest parts of Earth's oceans are deeper than Mount Everest is tall.",
+"The visible universe contains an enormous number of galaxies.",
+"Some stars are so dense that a teaspoon-sized amount of their matter would have an extraordinary mass on Earth.",
+"The Milky Way is a barred spiral galaxy.",
+"Earth's atmosphere protects the surface from much of the Sun's harmful ultraviolet radiation.",
+"Some space probes continue sending data decades after launch.",
+"Time passes at slightly different rates depending on gravity and relative motion.",
+"GPS has to account for relativity to remain accurate.",
+"The same side of the Moon generally faces Earth because the Moon is tidally locked.",
+"The Moon has no global atmosphere like Earth's.",
+"Footprints on the Moon can persist for extremely long periods because there is no rain or wind to erase them.",
+"Some tardigrades have survived conditions that would be fatal to many other organisms.",
+"A day on Earth is 86,400 seconds by the conventional definition.",
+"Earth's magnetic poles are not perfectly fixed and slowly change over time.",
+"Some caves contain crystals that took thousands or millions of years to grow.",
+"Octopuses can change color and skin texture.",
+"Some whales communicate using sounds that can travel enormous distances underwater.",
+"Plants can release volatile chemicals into the air when attacked by herbivores.",
+"Certain insects can navigate using polarized light.",
+"Some spiders use airborne silk to travel on air currents.",
+"Lightning is not actually a single continuous glowing rod; it is a rapidly developing electrical discharge.",
+"Some volcanoes exist beneath oceans and can build islands over time.",
+"The ocean absorbs a large amount of the excess heat in Earth's climate system.",
+"Some stars end their lives in spectacular explosions called supernovae.",
+"White dwarfs are the compact remnants of certain stars.",
+"Black holes can have accretion disks made from superheated material.",
+"Some galaxies have supermassive black holes at their centers.",
+"Earth is approximately 4.5 billion years old.",
+"The universe is approximately 13.8 billion years old according to current measurements.",
+"Some microbes can survive in extremely salty environments.",
+"Certain bacteria can use chemical energy instead of sunlight.",
+"Some animals use Earth's magnetic field as part of their navigation system.",
+"Your brain constantly predicts what it expects to see and hear.",
+"Human fingerprints develop before birth.",
+"Your body contains trillions of microorganisms that interact with your biology.",
+"Some sounds can make physical objects vibrate strongly enough to break them under the right conditions.",
+"Plants do not have brains, but they can sense light, gravity, touch, chemicals and other environmental signals.",
+"Some flowers change temperature to attract pollinators.",
+"Certain fish can produce electrical signals.",
+"Some lizards can detach their tails as an escape mechanism.",
+"Some animals see wavelengths of light humans cannot see.",
+"Many birds have far better color vision than humans.",
+"Some deep-sea creatures have enormous eyes relative to their bodies.",
+"Some desert animals obtain much of their water indirectly from their food.",
+"Not all deserts are hot; polar regions can be deserts too."
+
+];
+
+const container =
+  document.getElementById("facts");
+
+function renderFacts(list) {
+
+  container.innerHTML = "";
+
+  list.forEach((fact,index) => {
+
+    const article =
+      document.createElement("article");
+
+    article.className="panel fact";
+
+    article.innerHTML=`
+      <div class="fact-number">
+        FACT ${String(index+1).padStart(3,"0")}
+      </div>
+
+      <p>${fact}</p>
+    `;
+
+    container.appendChild(article);
+
+  });
+
+}
+
+document
+  .getElementById("randomFact")
+  .onclick=()=>{
+
+    const fact =
+      facts[
+        Math.floor(
+          Math.random()*facts.length
+        )
+      ];
+
+    renderFacts([fact]);
+
+    window.scrollTo({
+      top:160,
+      behavior:"smooth"
+    });
+
+  };
+
+document
+  .getElementById("allFacts")
+  .onclick=()=>renderFacts(facts);
+
+renderFacts(facts);
+
+</script>
 
 </body>
 </html>
