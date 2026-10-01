@@ -1,103 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Nebula Nook — a tiny universe of games, facts, chat, and cosmic fun.">
-  <title>Nebula Nook 🚀</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nightfall</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div id="stars"></div>
-  <div class="aurora"></div>
+<header>
+  <a class="logo" href="index.html">Nightfall</a>
 
-  <header class="topbar">
-    <a class="logo" href="#home" aria-label="Nebula Nook home"><span>✦</span> NEBULA NOOK</a>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="chat.html">Chat</a>
-      <a href="games.html">Games</a>
-      <a href="facts.html">Space Facts</a>
-      <a href="lab.html">Fun Lab</a>
-    </nav>
-    <button class="icon-btn" id="themeBtn" title="Toggle vibe">☾</button>
-  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="games.html">Games</a>
+    <a href="videos.html">Watch</a>
+    <a href="facts.html">Rabbit Holes</a>
+    <a href="little.html">Little Things</a>
+    <a href="chat.html">Friends</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+</header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow">WELCOME TO YOUR PERSONAL UNIVERSE</p>
-        <h1>HEY, <span id="heroName">STARWALKER</span>.<br><em>LET'S HAVE SOME FUN.</em></h1>
-        <p class="hero-text">Games. Weird facts. A tiny chatbot. Cosmic nonsense. This is your little corner of the internet.</p>
-        <div class="hero-actions">
-          <button class="primary" onclick="location.href='games.html'">🚀 Explore the galaxy</button>
-          <button class="secondary" onclick="location.href='facts.html'">✦ Surprise me</button>
-        </div>
-        <div class="quick-stats">
-          <span>🪐 <b id="factCount">20</b> space facts</span>
-          <span>🎮 <b>4</b> mini-games</span>
-          <span>✨ infinite vibes</span>
-        </div>
-      </div>
-      <div class="planet-scene" aria-hidden="true">
-        <div class="planet-ring"></div>
-        <div class="planet"><span>🌍</span></div>
-        <div class="moon"></div>
-        <div class="satellite">🛰️</div>
-      </div>
-    </section>
+<main>
+  <section class="hero">
+    <small id="date"></small>
 
-    <section class="dashboard-grid">
-      <article class="card daily-card">
-        <div class="card-title"><span>☄️</span><h2>Cosmic thought</h2></div>
-        <p id="thought">The universe is under no obligation to make sense to you.</p>
-        <button class="text-btn" onclick="newThought()">another thought →</button>
-      </article>
+    <h1>Welcome to <i>Nightfall.</i></h1>
 
-      <article class="card identity-card">
-        <div class="card-title"><span>🪪</span><h2>Your space ID</h2></div>
-        <div class="identity">
-          <div class="avatar" id="avatar">🚀</div>
-          <div>
-            <strong id="profileName">STARWALKER</strong>
-            <small id="profileTitle">Rookie Cosmic Explorer</small>
-          </div>
-        </div>
-        <button class="text-btn" onclick="changeName()">rename yourself →</button>
-      </article>
+    <p>
+      A cozy little corner for games, videos, strange facts,
+      tiny projects, and whatever sounds fun tonight.
+    </p>
 
-      <article class="card mission-card">
-        <div class="card-title"><span>🎯</span><h2>Random mission</h2></div>
-        <p id="mission">Click below to receive a completely unnecessary mission.</p>
-        <button class="secondary small" onclick="newMission()">Assign mission</button>
-      </article>
-    </section>
+    <a class="button dark" href="games.html">Play something</a>
+    <a class="button" href="videos.html">Put something on</a>
+  </section>
 
+  <section class="rooms">
 
-    <section class="section" id="portals">
-      <div class="section-heading">
-        <p class="eyebrow">CHOOSE YOUR DESTINATION</p>
-        <h2>Open a portal ✦</h2>
-        <p>The front page stays your home base. Everything else gets its own world.</p>
-      </div>
-      <div class="dashboard-grid">
-        <a class="card" href="games.html"><div class="card-title"><span>🎮</span><h2>NEBULA ARCADE</h2></div><p>Big games, boss fights, leaderboards, unlocks, and ridiculous amounts of pixels.</p><span class="text-btn">enter arcade →</span></a>
-        <a class="card" href="chat.html"><div class="card-title"><span>🛰️</span><h2>FRIEND STATION</h2></div><p>A private-room chat shell for you and your friends. Connect Firebase later to make it real-time.</p><span class="text-btn">open station →</span></a>
-        <a class="card" href="videos.html"><div class="card-title"><span>📺</span><h2>VIDEO ORBIT</h2></div><p>Space documentaries, cosmic videos, and a Stray Kids corner using YouTube embeds.</p><span class="text-btn">watch orbit →</span></a>
-        <a class="card" href="facts.html"><div class="card-title"><span>🧠</span><h2>WEIRD SCIENCE</h2></div><p>Oddly specific, brain-bending facts with a “how is that even real?” energy.</p><span class="text-btn">enter archive →</span></a>
-      </div>
-    </section>
+    <a class="room big" href="games.html">
+      <small>01</small>
+      <h2>Games</h2>
+      <p>Real little games, not button simulators.</p>
+      <span class="arrow">↗</span>
+    </a>
 
-  </main>
+    <a class="room" href="videos.html">
+      <small>02</small>
+      <h2>Watch</h2>
+      <p>SKZ, space, ambience and rabbit holes.</p>
+      <span class="arrow">↗</span>
+    </a>
 
-  <footer>
-    <div><span class="logo"><span>✦</span> NEBULA NOOK</span><p>Made for curious humans and suspiciously confident aliens.</p></div>
-    <div class="footer-links"><a href="#home">top ↑</a><a href="https://github.com/" target="_blank" rel="noreferrer">GitHub ↗</a></div>
-  </footer>
+    <a class="room" href="facts.html">
+      <small>03</small>
+      <h2>Rabbit Holes</h2>
+      <p>Oddly specific things worth knowing.</p>
+      <span class="arrow">↗</span>
+    </a>
 
-  <script src="script.js"></script>
+    <a class="room" href="little.html">
+      <small>04</small>
+      <h2>Little Things</h2>
+      <p>Timers, journal, challenges and more.</p>
+      <span class="arrow">↗</span>
+    </a>
+
+  </section>
+
+  <section class="bottom">
+
+    <div>
+      <small>FOR TONIGHT</small>
+      <h2 id="comfortLine">make yourself comfortable.</h2>
+      <div id="clock"></div>
+    </div>
+
+    <div>
+      <small>TINY LIST</small>
+      <h2>Three things</h2>
+
+      <label>
+        <input type="checkbox">
+        drink something
+      </label>
+
+      <label>
+        <input type="checkbox">
+        do one fun thing
+      </label>
+
+      <label>
+        <input type="checkbox">
+        help tomorrow-you
+      </label>
+    </div>
+
+  </section>
+</main>
+
+<footer>Nightfall · made for wandering around</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
