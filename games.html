@@ -1,498 +1,710 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
 <title>Nightfall — Games</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
-<body>
 
-<header>
-<a class="logo" href="index.html">Nightfall</a>
+<body class="page">
 
-<nav>
-<a href="index.html">Home</a>
-<a href="games.html">Games</a>
-<a href="videos.html">Watch</a>
-<a href="facts.html">Rabbit Holes</a>
-<a href="little.html">Little Things</a>
-<a href="chat.html">Friends</a>
-<a href="settings.html">Settings</a>
-</nav>
+<div class="page-shell">
+
+
+<header class="page-header">
+
+<a href="index.html" class="logo">
+Nightfall
+</a>
+
+<a href="index.html" class="back">
+back home
+</a>
+
 </header>
 
-<main>
 
-<section class="page-title">
-<small>ARCADE</small>
-<h1>Games.</h1>
-<p>
-Actual little browser games with memory, reflexes,
-puzzles and timing.
-</p>
-</section>
+<h1 class="page-title">
+Games
+</h1>
 
-<section class="grid">
-
-<!-- MEMORY -->
-
-<article class="card">
-
-<small>MEMORY</small>
-
-<h2>Pair Up</h2>
-
-<p>
-Find every matching pair in as few moves as possible.
+<p class="page-subtitle">
+Actual games. No fake “AI game” buttons.
 </p>
 
-<div id="memory" class="memory"></div>
 
-<p id="memoryStatus" class="status"></p>
+<div class="section-title">
+2048
+</div>
 
-<button class="btn" onclick="newMemory()">
-New board
+
+<div class="game">
+
+<div class="game-top">
+
+<div class="game-title">
+2048
+</div>
+
+<div class="game-score">
+score:
+<span id="score">0</span>
+</div>
+
+</div>
+
+
+<canvas
+id="board"
+width="600"
+height="600">
+</canvas>
+
+
+<div class="game-help">
+Use arrow keys. On mobile, swipe.
+</div>
+
+<br>
+
+<button
+class="button"
+onclick="newGame()">
+
+new game
+
 </button>
 
-</article>
+</div>
 
 
-<!-- SNOW CATCH -->
 
-<article class="card">
+<div class="section-title">
+Night Drive
+</div>
 
-<small>REFLEX</small>
 
-<h2>Snow Catch</h2>
+<div class="game">
 
-<p>
-Catch as many flakes as possible before time runs out.
-</p>
+<div class="game-top">
 
-<div id="snowArea" class="catch"></div>
+<div class="game-title">
+Night Drive
+</div>
 
-<p id="snowStatus" class="status">
-Press start.
-</p>
+<div class="game-score">
+distance:
+<span id="distance">0</span>
+</div>
 
-<button class="btn" onclick="startSnow()">
-Start
+</div>
+
+
+<canvas
+id="drive"
+width="800"
+height="450">
+</canvas>
+
+
+<div class="game-help">
+Move with ← → or A / D. Avoid the cars.
+</div>
+
+<br>
+
+<button
+class="button"
+onclick="startDrive()">
+
+start drive
+
 </button>
 
-</article>
+</div>
 
 
-<!-- PUZZLE -->
+</div>
 
-<article class="card">
-
-<small>SLIDING PUZZLE</small>
-
-<h2>Eight</h2>
-
-<p>
-Slide the numbers back into order.
-</p>
-
-<div id="puzzle" class="puzzle"></div>
-
-<p id="puzzleStatus" class="status"></p>
-
-<button class="btn" onclick="shufflePuzzle()">
-Shuffle
-</button>
-
-</article>
-
-
-<!-- TYPING -->
-
-<article class="card">
-
-<small>WORD SPRINT</small>
-
-<h2>Type It</h2>
-
-<p>
-Copy the sentence before the timer runs out.
-</p>
-
-<p id="typingPrompt">
-Press start.
-</p>
-
-<textarea
-id="typingInput"
-class="typing"
-disabled
-></textarea>
-
-<p id="typingStatus" class="status"></p>
-
-<button class="btn" onclick="startTyping()">
-Start
-</button>
-
-</article>
-
-</section>
-
-</main>
-
-<footer>Nightfall · play as long as you want</footer>
 
 <script src="script.js"></script>
 
+
 <script>
 
-/* MEMORY GAME */
+/* =====================
+   2048
+===================== */
 
-const symbols = [
-"✦","☾","❄","✧",
-"♡","✿","☼","◇"
+const canvas =
+document.getElementById("board");
+
+const ctx =
+canvas.getContext("2d");
+
+let board;
+let score;
+
+
+function newGame(){
+
+board =
+Array.from(
+{length:4},
+() => Array(4).fill(0)
+);
+
+score = 0;
+
+addTile();
+addTile();
+
+draw();
+
+}
+
+
+function empty(){
+
+const cells=[];
+
+for(let r=0;r<4;r++){
+
+for(let c=0;c<4;c++){
+
+if(board[r][c]===0){
+
+cells.push([r,c]);
+
+}
+
+}
+
+}
+
+return cells;
+
+}
+
+
+function addTile(){
+
+const cells=empty();
+
+if(!cells.length) return;
+
+const [r,c] =
+cells[
+Math.floor(
+Math.random()*cells.length
+)
 ];
 
-let memoryCards = [];
-let memoryFirst = null;
-let memoryLocked = false;
-let memoryMoves = 0;
+board[r][c] =
+Math.random()<.9 ? 2 : 4;
 
-function newMemory() {
-
-  memoryCards =
-    [...symbols, ...symbols]
-      .sort(() => Math.random() - .5);
-
-  memoryFirst = null;
-  memoryLocked = false;
-  memoryMoves = 0;
-
-  document.getElementById("memoryStatus")
-    .textContent = "Moves: 0";
-
-  document.getElementById("memory").innerHTML =
-    memoryCards
-      .map((symbol,index) =>
-        `<button onclick="flipCard(${index})">?</button>`
-      )
-      .join("");
 }
 
 
-function flipCard(index) {
+function merge(row){
 
-  const buttons =
-    document.querySelectorAll("#memory button");
+let a =
+row.filter(Boolean);
 
-  if (
-    memoryLocked ||
-    buttons[index].classList.contains("open")
-  ) return;
+let result=[];
 
-  buttons[index].textContent =
-    memoryCards[index];
+for(let i=0;i<a.length;i++){
 
-  buttons[index].classList.add("open");
+if(a[i]===a[i+1]){
 
-  if (memoryFirst === null) {
+result.push(a[i]*2);
 
-    memoryFirst = index;
-    return;
-  }
+score += a[i]*2;
 
-  memoryMoves++;
+i++;
 
-  const first = memoryFirst;
-  memoryFirst = null;
+}else{
 
-  if (memoryCards[first] !== memoryCards[index]) {
+result.push(a[i]);
 
-    memoryLocked = true;
-
-    setTimeout(() => {
-
-      buttons[first].textContent = "?";
-      buttons[index].textContent = "?";
-
-      buttons[first].classList.remove("open");
-      buttons[index].classList.remove("open");
-
-      memoryLocked = false;
-
-    }, 600);
-
-  } else {
-
-    const open =
-      document.querySelectorAll("#memory .open").length;
-
-    if (open === 16) {
-
-      document.getElementById("memoryStatus")
-        .textContent =
-        `Finished in ${memoryMoves} moves.`;
-
-      return;
-    }
-  }
-
-  document.getElementById("memoryStatus")
-    .textContent =
-    `Moves: ${memoryMoves}`;
 }
 
-newMemory();
+}
 
+while(result.length<4)
+result.push(0);
 
-/* SNOW CATCH */
+return result;
 
-let snowInterval;
-let snowScore = 0;
-
-function startSnow() {
-
-  clearInterval(snowInterval);
-
-  snowScore = 0;
-
-  const area =
-    document.getElementById("snowArea");
-
-  const status =
-    document.getElementById("snowStatus");
-
-  area.innerHTML = "";
-
-  const end =
-    Date.now() + 20000;
-
-  snowInterval =
-    setInterval(() => {
-
-      if (Date.now() >= end) {
-
-        clearInterval(snowInterval);
-
-        area.innerHTML = "";
-
-        status.textContent =
-          `Final score: ${snowScore}`;
-
-        return;
-      }
-
-      const flake =
-        document.createElement("button");
-
-      flake.className = "flake";
-
-      flake.style.left =
-        Math.random() * 90 + "%";
-
-      flake.style.top =
-        Math.random() * 80 + "%";
-
-      flake.onclick = () => {
-
-        snowScore++;
-
-        flake.remove();
-
-        status.textContent =
-          `Score: ${snowScore}`;
-
-      };
-
-      area.appendChild(flake);
-
-      setTimeout(() => {
-        flake.remove();
-      }, 750);
-
-    }, 350);
 }
 
 
-/* PUZZLE */
+function moveLeft(){
 
-let puzzle =
-  [1,2,3,4,5,6,7,8,0];
+let old =
+JSON.stringify(board);
 
-function renderPuzzle() {
+board =
+board.map(row=>merge(row));
 
-  document.getElementById("puzzle").innerHTML =
-    puzzle.map((number,index) => `
-      <button
-        class="tile ${number === 0 ? "empty" : ""}"
-        onclick="moveTile(${index})"
-      >
-        ${number || ""}
-      </button>
-    `).join("");
+if(JSON.stringify(board)!==old)
+addTile();
 
-  if (
-    puzzle.join("") === "123456780"
-  ) {
-    document.getElementById("puzzleStatus")
-      .textContent = "Solved!";
-  }
+draw();
+
 }
 
 
-function moveTile(index) {
+function moveRight(){
 
-  const empty =
-    puzzle.indexOf(0);
+let old =
+JSON.stringify(board);
 
-  const distance =
-    Math.abs(index % 3 - empty % 3) +
-    Math.abs(
-      Math.floor(index / 3) -
-      Math.floor(empty / 3)
-    );
+board =
+board.map(row=>
+merge([...row].reverse())
+.reverse()
+);
 
-  if (distance !== 1) return;
+if(JSON.stringify(board)!==old)
+addTile();
 
-  [
-    puzzle[index],
-    puzzle[empty]
-  ] =
-  [
-    puzzle[empty],
-    puzzle[index]
-  ];
+draw();
 
-  renderPuzzle();
 }
 
 
-function shufflePuzzle() {
+function moveUp(){
 
-  for (let i = 0; i < 80; i++) {
+let old =
+JSON.stringify(board);
 
-    const empty =
-      puzzle.indexOf(0);
+let next =
+Array.from(
+{length:4},
+()=>Array(4).fill(0)
+);
 
-    const possible =
-      [empty-1,empty+1,empty-3,empty+3]
-      .filter(index => {
+for(let c=0;c<4;c++){
 
-        if (index < 0 || index > 8)
-          return false;
+let column =
+board.map(row=>row[c]);
 
-        return (
-          Math.abs(index % 3 - empty % 3) +
-          Math.abs(
-            Math.floor(index / 3) -
-            Math.floor(empty / 3)
-          )
-        ) === 1;
+let merged =
+merge(column);
 
-      });
+for(let r=0;r<4;r++){
 
-    const chosen =
-      possible[
-        Math.floor(
-          Math.random() * possible.length
-        )
-      ];
+next[r][c]=merged[r];
 
-    [
-      puzzle[empty],
-      puzzle[chosen]
-    ] =
-    [
-      puzzle[chosen],
-      puzzle[empty]
-    ];
-  }
-
-  document.getElementById("puzzleStatus")
-    .textContent = "";
-
-  renderPuzzle();
 }
 
-shufflePuzzle();
-
-
-/* TYPING GAME */
-
-const sentences = [
-  "The quietest room can still have a whole universe inside it.",
-  "Somewhere, someone is seeing snow for the first time.",
-  "A tiny routine can make an ordinary evening feel different.",
-  "There are more stories in an old library than anyone can finish."
-];
-
-let typingTimer;
-
-function startTyping() {
-
-  clearInterval(typingTimer);
-
-  const sentence =
-    sentences[
-      Math.floor(
-        Math.random() * sentences.length
-      )
-    ];
-
-  const prompt =
-    document.getElementById("typingPrompt");
-
-  const input =
-    document.getElementById("typingInput");
-
-  const status =
-    document.getElementById("typingStatus");
-
-  prompt.textContent = sentence;
-
-  input.value = "";
-  input.disabled = false;
-  input.focus();
-
-  const end =
-    Date.now() + 25000;
-
-  typingTimer =
-    setInterval(() => {
-
-      if (input.value === sentence) {
-
-        clearInterval(typingTimer);
-
-        input.disabled = true;
-
-        status.textContent =
-          "Done — nice.";
-
-        return;
-      }
-
-      const remaining =
-        Math.ceil(
-          (end - Date.now()) / 1000
-        );
-
-      status.textContent =
-        `${Math.max(0,remaining)}s left`;
-
-      if (remaining <= 0) {
-
-        clearInterval(typingTimer);
-
-        input.disabled = true;
-
-        status.textContent = "Time.";
-      }
-
-    }, 250);
 }
+
+board=next;
+
+if(JSON.stringify(board)!==old)
+addTile();
+
+draw();
+
+}
+
+
+function moveDown(){
+
+let old =
+JSON.stringify(board);
+
+let next =
+Array.from(
+{length:4},
+()=>Array(4).fill(0)
+);
+
+for(let c=0;c<4;c++){
+
+let column =
+board.map(row=>row[c]);
+
+let merged =
+merge(column.reverse())
+.reverse();
+
+for(let r=0;r<4;r++){
+
+next[r][c]=merged[r];
+
+}
+
+}
+
+board=next;
+
+if(JSON.stringify(board)!==old)
+addTile();
+
+draw();
+
+}
+
+
+function draw(){
+
+ctx.clearRect(
+0,
+0,
+600,
+600
+);
+
+ctx.fillStyle="#101619";
+
+ctx.fillRect(
+0,
+0,
+600,
+600
+);
+
+const size=150;
+
+for(let r=0;r<4;r++){
+
+for(let c=0;c<4;c++){
+
+let value=board[r][c];
+
+ctx.fillStyle =
+value
+? "rgba(230,238,235,.15)"
+: "rgba(255,255,255,.045)";
+
+ctx.fillRect(
+c*size+7,
+r*size+7,
+size-14,
+size-14
+);
+
+if(value){
+
+ctx.fillStyle="#edf2ef";
+
+ctx.font =
+value>999
+? "32px sans-serif"
+: "44px sans-serif";
+
+ctx.textAlign="center";
+
+ctx.textBaseline="middle";
+
+ctx.fillText(
+value,
+c*size+size/2,
+r*size+size/2
+);
+
+}
+
+}
+
+}
+
+document.getElementById("score")
+.textContent=score;
+
+}
+
+
+window.addEventListener(
+"keydown",
+event=>{
+
+if(event.key==="ArrowLeft")
+moveLeft();
+
+if(event.key==="ArrowRight")
+moveRight();
+
+if(event.key==="ArrowUp")
+moveUp();
+
+if(event.key==="ArrowDown")
+moveDown();
+
+}
+);
+
+
+/* =====================
+   NIGHT DRIVE
+===================== */
+
+const drive =
+document.getElementById("drive");
+
+const dctx =
+drive.getContext("2d");
+
+let driving=false;
+
+let carX=380;
+
+let cars=[];
+
+let distance=0;
+
+let lastTime=0;
+
+let keys={};
+
+
+function startDrive(){
+
+driving=true;
+
+carX=380;
+
+cars=[];
+
+distance=0;
+
+lastTime=
+performance.now();
+
+requestAnimationFrame(
+driveLoop
+);
+
+}
+
+
+function driveLoop(time){
+
+if(!driving) return;
+
+const delta =
+Math.min(
+.04,
+(time-lastTime)/1000
+);
+
+lastTime=time;
+
+distance +=
+delta*10;
+
+document.getElementById(
+"distance"
+).textContent=
+Math.floor(distance);
+
+
+if(keys["ArrowLeft"]||keys["a"]){
+
+carX -=
+260*delta;
+
+}
+
+if(keys["ArrowRight"]||keys["d"]){
+
+carX +=
+260*delta;
+
+}
+
+carX =
+Math.max(
+175,
+Math.min(
+585,
+carX
+)
+);
+
+
+if(Math.random()<.025){
+
+cars.push({
+
+x:
+190+
+Math.random()*390,
+
+y:-70,
+
+speed:
+170+
+distance*2
+
+});
+
+}
+
+
+cars.forEach(car=>{
+car.y += car.speed*delta;
+});
+
+
+cars =
+cars.filter(
+car=>car.y<500
+);
+
+
+for(const car of cars){
+
+if(
+
+carX < car.x+42 &&
+carX+40 > car.x &&
+410 < car.y+65 &&
+472 > car.y
+
+){
+
+driving=false;
+
+drawDrive();
+
+return;
+
+}
+
+}
+
+
+drawDrive();
+
+requestAnimationFrame(
+driveLoop
+);
+
+}
+
+
+function drawDrive(){
+
+dctx.clearRect(
+0,
+0,
+800,
+450
+);
+
+
+dctx.fillStyle="#080d0f";
+
+dctx.fillRect(
+0,
+0,
+800,
+450
+);
+
+
+/* road */
+
+dctx.fillStyle="#182126";
+
+dctx.fillRect(
+150,
+0,
+500,
+450
+);
+
+
+/* lane */
+
+dctx.strokeStyle=
+"rgba(255,255,255,.18)";
+
+dctx.lineWidth=3;
+
+dctx.setLineDash([
+24,
+25
+]);
+
+dctx.beginPath();
+
+dctx.moveTo(
+400,
+0
+);
+
+dctx.lineTo(
+400,
+450
+);
+
+dctx.stroke();
+
+dctx.setLineDash([]);
+
+
+/* player */
+
+dctx.fillStyle="#dfe8e3";
+
+dctx.fillRect(
+carX,
+410,
+40,
+62
+);
+
+
+/* traffic */
+
+cars.forEach(car=>{
+
+dctx.fillStyle="#647276";
+
+dctx.fillRect(
+car.x,
+car.y,
+42,
+65
+);
+
+});
+
+}
+
+
+window.addEventListener(
+"keydown",
+e=>{
+keys[e.key]=true;
+}
+);
+
+
+window.addEventListener(
+"keyup",
+e=>{
+keys[e.key]=false;
+}
+);
+
+
+newGame();
 
 </script>
 
