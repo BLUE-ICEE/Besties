@@ -9,53 +9,49 @@
 
 <body class="home">
 
-  <div class="background"></div>
-  <div class="darken"></div>
+  <div id="scene" class="scene"></div>
+  <div class="shade"></div>
 
-  <header>
-    <a href="index.html" class="logo">Nightfall</a>
+  <header class="topbar">
+    <a class="brand" href="index.html">nightfall</a>
 
     <nav>
       <a href="games.html">games</a>
       <a href="videos.html">watch</a>
-      <a href="facts.html">things</a>
+      <a href="facts.html">facts</a>
       <a href="little.html">little things</a>
+      <a href="things.html">things</a>
       <a href="settings.html">settings</a>
     </nav>
   </header>
 
-  <main class="home-content">
+  <main class="home-main">
 
-    <div class="clock-area">
-      <div id="clock">10:03</div>
-
-      <div id="date">Wednesday, September 30</div>
-
-      <div class="timezone">
-        NEW YORK · EST / EDT
+    <section class="clock-wrap">
+      <div class="eyebrow" id="tzLabel">
+        NEW YORK · EASTERN TIME
       </div>
-    </div>
 
-    <div class="now-playing">
+      <div class="clock" id="clock">--:--</div>
 
-      <div class="music-dot"></div>
+      <div class="date" id="date">
+        loading...
+      </div>
+    </section>
+
+    <section class="now-playing">
+      <span class="dot"></span>
 
       <div>
-        <div class="now-label">NOW PLAYING</div>
-        <div class="song">One Kiss</div>
-        <div class="artist">Calvin Harris · Dua Lipa</div>
+        <strong id="homeLine">a quiet place on the internet</strong>
+        <small id="homeHint">stay as long as you want</small>
       </div>
+    </section>
 
-    </div>
+    <button class="scene-btn" id="sceneBtn">↻</button>
 
   </main>
 
-  <div class="bottom">
-    <span>make yourself at home</span>
-    <button id="changeView">change view</button>
-  </div>
-
   <script src="script.js"></script>
-
 </body>
 </html>
