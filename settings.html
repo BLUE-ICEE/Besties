@@ -1,72 +1,149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nightfall — Settings</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nightfall — Settings</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="page">
 
-<header>
-<a class="logo" href="index.html">Nightfall</a>
+<div class="page-shell">
 
-<nav>
-<a href="index.html">Home</a>
-<a href="games.html">Games</a>
-<a href="videos.html">Watch</a>
-<a href="facts.html">Rabbit Holes</a>
-<a href="little.html">Little Things</a>
-<a href="chat.html">Friends</a>
-<a href="settings.html">Settings</a>
-</nav>
-</header>
+  <header class="page-header">
 
-<main>
+    <a href="index.html" class="logo">
+      Nightfall
+    </a>
 
-<section class="page-title">
-<small>SETTINGS</small>
-<h1>Change the weather.</h1>
-<p>
-The whole interface changes with the theme.
-Pick whatever matches your mood.
-</p>
-</section>
+    <a href="index.html" class="back">
+      back home
+    </a>
 
-<div class="themes">
+  </header>
 
-<button class="theme" onclick="setTheme('winter')">
-<div class="dot" style="background:#dbe7ee"></div>
-Winter
-</button>
 
-<button class="theme" onclick="setTheme('autumn')">
-<div class="dot" style="background:#d6b08f"></div>
-Autumn
-</button>
+  <h1 class="page-title">
+    Settings
+  </h1>
 
-<button class="theme" onclick="setTheme('forest')">
-<div class="dot" style="background:#9fb9a5"></div>
-Forest
-</button>
+  <p class="page-subtitle">
+    Change the atmosphere. Nightfall remembers your choice on this device.
+  </p>
 
-<button class="theme" onclick="setTheme('space')">
-<div class="dot" style="background:#535eaa"></div>
-Space
-</button>
 
-<button class="theme" onclick="setTheme('rose')">
-<div class="dot" style="background:#d5a6b6"></div>
-Rose
-</button>
+  <div class="section-title">
+    atmosphere
+  </div>
+
+
+  <div class="theme-grid">
+
+    <button
+      class="theme"
+      onclick="setTheme('winter')">
+
+      <div class="theme-preview winter"></div>
+
+      <span>Winter</span>
+
+    </button>
+
+
+    <button
+      class="theme"
+      onclick="setTheme('autumn')">
+
+      <div class="theme-preview autumn"></div>
+
+      <span>Autumn</span>
+
+    </button>
+
+
+    <button
+      class="theme"
+      onclick="setTheme('forest')">
+
+      <div class="theme-preview forest"></div>
+
+      <span>Forest</span>
+
+    </button>
+
+
+    <button
+      class="theme"
+      onclick="setTheme('space')">
+
+      <div class="theme-preview space"></div>
+
+      <span>Space</span>
+
+    </button>
+
+
+    <button
+      class="theme"
+      onclick="setTheme('rose')">
+
+      <div class="theme-preview rose"></div>
+
+      <span>Rose</span>
+
+    </button>
+
+  </div>
+
+
+  <div class="section-title">
+    about this version
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card">
+
+      <h3>Quiet by default</h3>
+
+      <p>
+        The home screen is intentionally sparse.
+        The fun stuff isn't screaming at you the second you arrive.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>New York time</h3>
+
+      <p>
+        The clock uses America/New_York,
+        including daylight-saving changes automatically.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Your device</h3>
+
+      <p>
+        Themes and game scores are saved locally in your browser.
+      </p>
+
+    </div>
+
+  </div>
 
 </div>
-
-</main>
-
-<footer>Nightfall</footer>
 
 <script src="script.js"></script>
 
