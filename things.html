@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nightfall · Things</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="page">
+
+<header class="topbar page-header">
+
+<a class="brand" href="index.html">nightfall</a>
+
+<nav>
+<a href="games.html">games</a>
+<a href="videos.html">watch</a>
+<a href="facts.html">facts</a>
+<a href="little.html">little things</a>
+<a href="things.html">things</a>
+<a href="settings.html">settings</a>
+</nav>
+
+</header>
+
+<h1 class="page-title">things to mess with</h1>
+
+<p class="sub">
+Tiny internet toys. No accounts. No productivity required.
+</p>
+
+<div class="grid">
+
+
+<section class="panel full">
+
+<span class="tag">this or that</span>
+
+<h2>Would you rather?</h2>
+
+<div id="choices" class="grid two"></div>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">color</span>
+
+<h2>random color</h2>
+
+<div
+id="colorName"
+class="tool-result">
+night water
+</div>
+
+<button id="randomColor">
+randomize
+</button>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">story</span>
+
+<h2>story machine</h2>
+
+<div
+id="story"
+class="tool-result">
+click it
+</div>
+
+<button id="storyBtn">
+continue the universe
+</button>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">important</span>
+
+<h2>coin flip</h2>
+
+<div
+id="coin"
+class="tool-result">
+heads or tails?
+</div>
+
+<button id="flip">
+flip
+</button>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">pixel</span>
+
+<h2>tiny pixel board</h2>
+
+<div
+id="pixels"
+style="
+display:grid;
+grid-template-columns:repeat(8,24px);
+gap:3px;
+margin:18px 0;
+"></div>
+
+<button id="clearPixels">
+clear
+</button>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">counter</span>
+
+<h2>tiny tally</h2>
+
+<div
+id="count"
+class="tool-result">
+0
+</div>
+
+<div class="row">
+
+<button id="minus">−</button>
+
+<button id="plus">+</button>
+
+<button id="zero">reset</button>
+
+</div>
+
+</section>
+
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+/* WOULD YOU RATHER */
+
+const questions=[
+
+[
+"stay up late with a perfect playlist",
+"wake up early with perfect weather"
+],
+
+[
+"have a tiny room with a perfect view",
+"have a huge room with no windows"
+],
+
+[
+"pause time for 10 minutes",
+"rewind one moment every day"
+],
+
+[
+"always know what time it is",
+"always know what day it is"
+],
+
+[
+"live beside a forest",
+"live beside the ocean"
+],
+
+[
+"have unlimited books",
+"have unlimited movies"
+],
+
+[
+"be famous for one weird skill",
+"be anonymous but insanely talented"
+],
+
+[
+"only listen to one genre forever",
+"never hear the same song twice"
+],
+
+[
+"have a room that changes with the weather",
+"have a room that changes with your mood"
+],
+
+[
+"visit space",
+"visit the deepest ocean"
+],
+
+[
+"have perfect memory",
+"have perfect imagination"
+],
+
+[
+"live in a city that never sleeps",
+"live somewhere incredibly quiet"
+]
+
+];
+
+function newQuestion(){
+
+const question =
+questions[
+Math.floor(
+Math.random()*questions.length
+)
+];
+
+const box =
+document.getElementById("choices");
+
+box.innerHTML="";
+
+question.forEach(choice=>{
+
+const button =
+document.createElement("button");
+
+button.className="choice";
+
+button.textContent=choice;
+
+button.onclick=()=>{
+
+box.querySelectorAll("button")
+.forEach(x=>{
+x.style.opacity=".35";
+});
+
+button.style.opacity="1";
+
+};
+
+box.appendChild(button);
+
+});
+
+}
+
+newQuestion();
+
+document
+.getElementById("choices")
+.addEventListener(
+"dblclick",
+newQuestion
+);
+
+
+/* STORY */
+
+const storyA=[
+
+"At 2:17 a.m.",
+"On a Tuesday",
+"Under a streetlight",
+"Inside an empty cinema",
+"At the edge of the forest",
+"On the last train",
+"During the first snowfall",
+"At the very end of summer"
+
+];
+
+const storyB=[
+
+"someone found a door",
+"the vending machine blinked twice",
+"a radio started playing",
+"the moon looked different",
+"a cat knew the answer",
+"the elevator stopped",
+"every clock showed the same time",
+"someone left a note"
+
+];
+
+document.getElementById(
+"storyBtn"
+).onclick=()=>{
+
+document.getElementById(
+"story"
+).textContent =
+
+storyA[
+Math.floor(Math.random()*storyA.length)
+]
++
+" "
++
+storyB[
+Math.floor(Math.random()*storyB.length)
+]
++
+".";
+
+};
+
+
+/* COIN */
+
+document.getElementById(
+"flip"
+).onclick=()=>{
+
+document.getElementById(
+"coin"
+).textContent =
+Math.random()<.5
+? "heads"
+: "tails";
+
+};
+
+
+/* COUNTER */
+
+let count=0;
+
+function drawCount(){
+
+document.getElementById(
+"count"
+).textContent=count;
+
+}
+
+document.getElementById(
+"plus"
+).onclick=()=>{
+count++;
+drawCount();
+};
+
+document.getElementById(
+"minus"
+).onclick=()=>{
+count--;
+drawCount();
+};
+
+document.getElementById(
+"zero"
+).onclick=()=>{
+count=0;
+drawCount();
+};
+
+
+/* PIXEL ART */
+
+const pixels =
+document.getElementById("pixels");
+
+for(let i=0;i<64;i++){
+
+const pixel =
+document.createElement("button");
+
+pixel.style.width="24px";
+pixel.style.height="24px";
+pixel.style.padding="0";
+pixel.style.borderRadius="3px";
+
+pixel.style.background=
+"rgba(255,255,255,.05)";
+
+pixel.onclick=()=>{
+
+if(
+pixel.dataset.on === "true"
+){
+
+pixel.style.background=
+"rgba(255,255,255,.05)";
+
+pixel.dataset.on="false";
+
+}else{
+
+pixel.style.background=
+"#c7e7e3";
+
+pixel.dataset.on="true";
+
+}
+
+};
+
+pixels.appendChild(pixel);
+
+}
+
+document.getElementById(
+"clearPixels"
+).onclick=()=>{
+
+pixels
+.querySelectorAll("button")
+.forEach(pixel=>{
+
+pixel.style.background=
+"rgba(255,255,255,.05)";
+
+pixel.dataset.on="false";
+
+});
+
+};
+
+
+/* COLOR */
+
+const colors=[
+
+["#9ab8b5","night water"],
+["#9aabc8","blue dusk"],
+["#c1a08b","old library"],
+["#8ca58f","pine after rain"],
+["#a18bb9","violet hour"],
+["#d0b38f","warm paper"],
+["#718c9b","storm window"],
+["#b98e9e","quiet rose"]
+
+];
+
+document.getElementById(
+"randomColor"
+).onclick=()=>{
+
+const item =
+colors[
+Math.floor(
+Math.random()*colors.length
+)
+];
+
+document.getElementById(
+"colorName"
+).textContent =
+item[1];
+
+};
+
+</script>
+
+</body>
+</html>
