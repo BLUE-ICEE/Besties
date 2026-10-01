@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nightfall — Little Things</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<a class="logo" href="index.html">Nightfall</a>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="games.html">Games</a>
+<a href="videos.html">Watch</a>
+<a href="facts.html">Rabbit Holes</a>
+<a href="little.html">Little Things</a>
+<a href="chat.html">Friends</a>
+<a href="settings.html">Settings</a>
+</nav>
+</header>
+
+<main>
+
+<section class="page-title">
+<small>LITTLE THINGS</small>
+
+<h1>Stay a while.</h1>
+
+<p>
+Small tools for when you don't know what you feel like doing.
+</p>
+</section>
+
+<section class="tools">
+
+<div class="card">
+
+<small>FOCUS</small>
+
+<h2>10 minute timer</h2>
+
+<div id="timer" class="bigtime">
+10:00
+</div>
+
+<button class="btn" onclick="startTimer()">
+Start
+</button>
+
+<button class="btn" onclick="resetTimer()">
+Reset
+</button>
+
+</div>
+
+
+<div class="card">
+
+<small>PICK FOR ME</small>
+
+<h2 id="pickResult">What now?</h2>
+
+<button class="btn" onclick="pickSomething()">
+Choose
+</button>
+
+</div>
+
+
+<div class="card">
+
+<small>MOOD</small>
+
+<h2>Tonight feels...</h2>
+
+<button class="btn" onclick="showMood('soft')">
+soft
+</button>
+
+<button class="btn" onclick="showMood('curious')">
+curious
+</button>
+
+<button class="btn" onclick="showMood('restless')">
+restless
+</button>
+
+<p id="moodResult"></p>
+
+</div>
+
+
+<div class="card" style="grid-column:1/-1">
+
+<small>PRIVATE LOCAL JOURNAL</small>
+
+<h2>Write something down.</h2>
+
+<textarea
+id="journal"
+class="journal"
+placeholder="This stays in this browser."
+></textarea>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>Nightfall · nothing here has to be productive</footer>
+
+<script src="script.js"></script>
+
+<script>
+
+let timerRemaining = 600;
+let timerInterval;
+
+function drawTimer() {
+
+  const minutes =
+    Math.floor(timerRemaining / 60);
+
+  const seconds =
+    String(timerRemaining % 60)
+      .padStart(2,"0");
+
+  document.getElementById("timer")
+    .textContent =
+    `${minutes}:${seconds}`;
+}
+
+
+function startTimer() {
+
+  clearInterval(timerInterval);
+
+  timerInterval =
+    setInterval(() => {
+
+      if (timerRemaining > 0) {
+
+        timerRemaining--;
+        drawTimer();
+
+      } else {
+
+        clearInterval(timerInterval);
+
+      }
+
+    },1000);
+}
+
+
+function resetTimer() {
+
+  clearInterval(timerInterval);
+
+  timerRemaining = 600;
+
+  drawTimer();
+}
+
+
+function pickSomething() {
+
+  const things = [
+    "play one game",
+    "watch something",
+    "learn a weird fact",
+    "make a tiny drawing",
+    "write three sentences",
+    "get a drink",
+    "rearrange one thing",
+    "go down a Wikipedia rabbit hole"
+  ];
+
+  document.getElementById("pickResult")
+    .textContent =
+    things[
+      Math.floor(
+        Math.random() * things.length
+      )
+    ];
+}
+
+
+function showMood(mood) {
+
+  const messages = {
+
+    soft:
+      "put on something familiar and let the evening be quiet.",
+
+    curious:
+      "open Rabbit Holes and follow the strangest fact.",
+
+    restless:
+      "try a game or move around for a few minutes."
+
+  };
+
+  document.getElementById("moodResult")
+    .textContent = messages[mood];
+}
+
+
+/* JOURNAL */
+
+const journal =
+  document.getElementById("journal");
+
+journal.value =
+  localStorage.getItem("nightfall-journal") || "";
+
+journal.addEventListener("input", () => {
+
+  localStorage.setItem(
+    "nightfall-journal",
+    journal.value
+  );
+
+});
+
+</script>
+
+</body>
+</html>
