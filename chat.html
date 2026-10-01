@@ -1,6 +1,148 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Friend Station</title><link rel="stylesheet" href="style.css"></head><body><div id="stars"></div><div class="aurora"></div><header class="topbar"><a class="logo" href="index.html"><span>✦</span> NEBULA NOOK</a><nav><a href="index.html">Home</a><a href="games.html">Arcade</a><a href="chat.html">Chat</a><a href="videos.html">Videos</a><a href="facts.html">Facts</a></nav></header><main class="portal-wrap"><div class="page-hero"><div><a class="back-link" href="index.html">← home</a><p class="eyebrow">FRIEND STATION // PRIVATE COMMS</p><h1>YOUR CREW,<br><em>IN ORBIT.</em></h1><p>A dedicated chat page. The UI works locally right now; real cross-device messaging needs a backend such as Firebase or Supabase.</p></div></div>
-<div class="notice">🔒 For a real friends-only chat, don't put passwords or private information into a public GitHub repo. Use a proper authentication/database service and invite only people you know.</div>
-<div class="card chat-layout" style="margin-top:18px"><aside class="rooms"><h3>ROOMS</h3><div class="room active">🌌 General Orbit</div><div class="room">🎮 Game Night</div><div class="room">🛸 Random</div><div class="room">📺 Watch Party</div><h3 style="margin-top:30px">FRIENDS</h3><div class="room">🟢 Nova</div><div class="room">🟢 Starfish</div><div class="room">🟡 Moonbean</div></aside><section class="friend-chat"><div class="friend-head">🌌 GENERAL ORBIT <span style="color:var(--green);font-size:10px"> • LOCAL DEMO</span></div><div class="friend-messages" id="fm"></div><form class="friend-form" onsubmit="sendFriend(event)"><input id="fi" placeholder="Message your crew..." maxlength="250"><button class="primary">SEND</button></form></section></div>
-</main><script>
-const fm=document.getElementById('fm');const key='nebulaFriendChat';let msgs=JSON.parse(localStorage.getItem(key)||'[]');if(!msgs.length)msgs=[['NOVA','Welcome to General Orbit. This demo saves messages on this device.'],['YOU','We need to connect this to real-time chat!']];function render(){fm.innerHTML=msgs.map(m=>`<div class="msg ${m[0]==='YOU'?'you':'nova'}"><b>${m[0]}</b><br>${m[1]}</div>`).join('');fm.scrollTop=fm.scrollHeight}function sendFriend(e){e.preventDefault();const i=document.getElementById('fi'),v=i.value.trim();if(!v)return;msgs.push(['YOU',v]);localStorage.setItem(key,JSON.stringify(msgs.slice(-100)));i.value='';render()}render();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nightfall — Friends</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+<a class="logo" href="index.html">
+Nightfall
+</a>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="games.html">Games</a>
+<a href="videos.html">Watch</a>
+<a href="facts.html">Rabbit Holes</a>
+<a href="little.html">Little Things</a>
+<a href="chat.html">Friends</a>
+<a href="settings.html">Settings</a>
+</nav>
+
+</header>
+
+<main>
+
+<section class="page-title">
+
+<small>FRIENDS</small>
+
+<h1>A room for your people.</h1>
+
+<p>
+This version saves messages locally in the browser.
+For actual friends on different devices, we'd connect this
+page to a real backend later.
+</p>
+
+</section>
+
+<div id="chat" class="chat"></div>
+
+<div class="chatrow">
+
+<input
+id="message"
+placeholder="say something..."
+>
+
+<button class="btn" onclick="sendMessage()">
+Send
+</button>
+
+</div>
+
+</main>
+
+<footer>Nightfall · friends room</footer>
+
+<script src="script.js"></script>
+
+<script>
+
+let messages =
+JSON.parse(
+  localStorage.getItem("nightfall-chat") || "[]"
+);
+
+
+function renderChat() {
+
+  const chat =
+    document.getElementById("chat");
+
+  chat.innerHTML =
+    messages.map(message => `
+
+      <div class="bubble ${message.me ? "me" : ""}">
+        ${escapeHTML(message.text)}
+      </div>
+
+    `).join("");
+
+  chat.scrollTop =
+    chat.scrollHeight;
+}
+
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+}
+
+
+function sendMessage() {
+
+  const input =
+    document.getElementById("message");
+
+  const text =
+    input.value.trim();
+
+  if (!text) return;
+
+  messages.push({
+    text,
+    me: true
+  });
+
+  localStorage.setItem(
+    "nightfall-chat",
+    JSON.stringify(messages)
+  );
+
+  input.value = "";
+
+  renderChat();
+}
+
+
+document
+  .getElementById("message")
+  .addEventListener("keydown", event => {
+
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+
+  });
+
+
+renderChat();
+
+</script>
+
+</body>
+</html>
