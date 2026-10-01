@@ -1,233 +1,437 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nightfall — Little Things</title>
+<title>Nightfall · Little Things</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-<a class="logo" href="index.html">Nightfall</a>
+<div class="page">
+
+<header class="topbar page-header">
+<a class="brand" href="index.html">nightfall</a>
 
 <nav>
-<a href="index.html">Home</a>
-<a href="games.html">Games</a>
-<a href="videos.html">Watch</a>
-<a href="facts.html">Rabbit Holes</a>
-<a href="little.html">Little Things</a>
-<a href="chat.html">Friends</a>
-<a href="settings.html">Settings</a>
+<a href="games.html">games</a>
+<a href="videos.html">watch</a>
+<a href="facts.html">facts</a>
+<a href="little.html">little things</a>
+<a href="things.html">things</a>
+<a href="settings.html">settings</a>
 </nav>
 </header>
 
-<main>
+<h1 class="page-title">little things</h1>
 
-<section class="page-title">
-<small>LITTLE THINGS</small>
-
-<h1>Stay a while.</h1>
-
-<p>
-Small tools for when you don't know what you feel like doing.
+<p class="sub">
+Tiny things to do when you want entertainment but don't know what.
 </p>
+
+<div class="grid">
+
+<section class="panel">
+
+<span class="tag">focus</span>
+
+<h2>20 minute timer</h2>
+
+<div class="timer" id="timer">
+20:00
+</div>
+
+<div class="row">
+<button id="startTimer">start</button>
+<button id="pauseTimer">pause</button>
+<button id="resetTimer">reset</button>
+</div>
+
 </section>
 
-<section class="tools">
 
-<div class="card">
+<section class="panel">
 
-<small>FOCUS</small>
+<span class="tag">random</span>
 
-<h2>10 minute timer</h2>
+<h2>what should I do?</h2>
 
-<div id="timer" class="bigtime">
-10:00
+<div
+id="doResult"
+class="tool-result">
+press the button
 </div>
 
-<button class="btn" onclick="startTimer()">
-Start
+<button id="doBtn">
+give me something
 </button>
 
-<button class="btn" onclick="resetTimer()">
-Reset
-</button>
+</section>
 
+
+<section class="panel">
+
+<span class="tag">brain</span>
+
+<h2>tiny challenge</h2>
+
+<div
+id="challenge"
+class="tool-result">
+tap for one
 </div>
 
-
-<div class="card">
-
-<small>PICK FOR ME</small>
-
-<h2 id="pickResult">What now?</h2>
-
-<button class="btn" onclick="pickSomething()">
-Choose
+<button id="challengeBtn">
+new challenge
 </button>
 
-</div>
+</section>
 
 
-<div class="card">
+<section class="panel">
 
-<small>MOOD</small>
+<span class="tag">writing</span>
 
-<h2>Tonight feels...</h2>
-
-<button class="btn" onclick="showMood('soft')">
-soft
-</button>
-
-<button class="btn" onclick="showMood('curious')">
-curious
-</button>
-
-<button class="btn" onclick="showMood('restless')">
-restless
-</button>
-
-<p id="moodResult"></p>
-
-</div>
-
-
-<div class="card" style="grid-column:1/-1">
-
-<small>PRIVATE LOCAL JOURNAL</small>
-
-<h2>Write something down.</h2>
+<h2>journal corner</h2>
 
 <textarea
 id="journal"
-class="journal"
-placeholder="This stays in this browser."
-></textarea>
+placeholder="type whatever. it stays in this browser."></textarea>
+
+<div class="row">
+
+<button id="saveJournal">
+save
+</button>
+
+<button id="clearJournal">
+clear
+</button>
+
+<span id="saved" class="tiny"></span>
 
 </div>
 
 </section>
 
-</main>
 
-<footer>Nightfall · nothing here has to be productive</footer>
+<section class="panel">
+
+<span class="tag">music</span>
+
+<h2>fake band name</h2>
+
+<div id="band" class="tool-result">
+—
+</div>
+
+<button id="bandBtn">
+generate
+</button>
+
+</section>
+
+
+<section class="panel">
+
+<span class="tag">reset</span>
+
+<h2>quiet screen</h2>
+
+<p>
+Want absolutely nothing going on?
+</p>
+
+<button onclick="location.href='index.html'">
+go back home
+</button>
+
+</section>
+
+</div>
+</div>
 
 <script src="script.js"></script>
 
 <script>
 
-let timerRemaining = 600;
-let timerInterval;
+let seconds=1200;
+let timer=null;
 
-function drawTimer() {
+function drawTimer(){
 
-  const minutes =
-    Math.floor(timerRemaining / 60);
+const minutes =
+Math.floor(seconds/60);
 
-  const seconds =
-    String(timerRemaining % 60)
-      .padStart(2,"0");
+const remaining =
+seconds%60;
 
-  document.getElementById("timer")
-    .textContent =
-    `${minutes}:${seconds}`;
+document.getElementById(
+"timer"
+).textContent =
+String(minutes).padStart(2,"0")
++
+":"
++
+String(remaining).padStart(2,"0");
+
 }
 
+document.getElementById(
+"startTimer"
+).onclick=()=>{
 
-function startTimer() {
+if(timer)return;
 
-  clearInterval(timerInterval);
+timer=setInterval(()=>{
 
-  timerInterval =
-    setInterval(() => {
+seconds--;
 
-      if (timerRemaining > 0) {
+drawTimer();
 
-        timerRemaining--;
-        drawTimer();
+if(seconds<=0){
 
-      } else {
+clearInterval(timer);
+timer=null;
+seconds=0;
 
-        clearInterval(timerInterval);
-
-      }
-
-    },1000);
 }
 
+},1000);
 
-function resetTimer() {
+};
 
-  clearInterval(timerInterval);
+document.getElementById(
+"pauseTimer"
+).onclick=()=>{
 
-  timerRemaining = 600;
+clearInterval(timer);
+timer=null;
 
-  drawTimer();
-}
+};
 
+document.getElementById(
+"resetTimer"
+).onclick=()=>{
 
-function pickSomething() {
+clearInterval(timer);
+timer=null;
 
-  const things = [
-    "play one game",
-    "watch something",
-    "learn a weird fact",
-    "make a tiny drawing",
-    "write three sentences",
-    "get a drink",
-    "rearrange one thing",
-    "go down a Wikipedia rabbit hole"
-  ];
+seconds=1200;
 
-  document.getElementById("pickResult")
-    .textContent =
-    things[
-      Math.floor(
-        Math.random() * things.length
-      )
-    ];
-}
+drawTimer();
+
+};
+
+drawTimer();
 
 
-function showMood(mood) {
+/* RANDOM */
 
-  const messages = {
+const ideas=[
 
-    soft:
-      "put on something familiar and let the evening be quiet.",
+"make a playlist for a movie that doesn't exist",
 
-    curious:
-      "open Rabbit Holes and follow the strangest fact.",
+"rearrange your phone home screen",
 
-    restless:
-      "try a game or move around for a few minutes."
+"design the worst logo imaginable",
 
-  };
+"learn one fact from the fact shelf",
 
-  document.getElementById("moodResult")
-    .textContent = messages[mood];
-}
+"try a game until you beat your score",
+
+"write a three-line story",
+
+"take a photo of something ordinary that looks cool",
+
+"make a tiny moodboard",
+
+"pick one color and find five things around you",
+
+"invent a fake café menu",
+
+"draw something without lifting your pen",
+
+"open your notes app and finish an abandoned idea",
+
+"make a fictional album cover",
+
+"write a movie title and absolutely nothing else",
+
+"organize one tiny corner of your room",
+
+"make a list of ten things you genuinely like",
+
+"create a fake holiday",
+
+"give a random object a dramatic backstory",
+
+"make a five-song rainy-day playlist",
+
+"try the arcade"
+
+];
+
+document.getElementById(
+"doBtn"
+).onclick=()=>{
+
+document.getElementById(
+"doResult"
+).textContent =
+ideas[
+Math.floor(Math.random()*ideas.length)
+];
+
+};
+
+
+/* CHALLENGES */
+
+const challenges=[
+
+"Name 8 animals in 15 seconds.",
+
+"Think of 5 words that rhyme with night.",
+
+"Count backwards from 40 by 3s.",
+
+"Name 6 countries.",
+
+"Find something nearby beginning with M.",
+
+"Write a sentence where every word starts with S.",
+
+"Remember everything you ate yesterday in order.",
+
+"Name 5 naturally blue things.",
+
+"Invent a six-word movie title.",
+
+"List 10 things that are colder than a fridge.",
+
+"Name 7 fictional characters.",
+
+"Think of 5 things you could put in a backpack.",
+
+"Name 8 things that make a sound.",
+
+"Make a sentence using exactly 7 words.",
+
+"Name 5 things you'd see at night."
+
+];
+
+document.getElementById(
+"challengeBtn"
+).onclick=()=>{
+
+document.getElementById(
+"challenge"
+).textContent =
+challenges[
+Math.floor(
+Math.random()*challenges.length
+)
+];
+
+};
+
+
+/* BAND NAME */
+
+const first=[
+"midnight",
+"paper",
+"silver",
+"quiet",
+"neon",
+"winter",
+"velvet",
+"static",
+"moon",
+"glass",
+"electric",
+"soft",
+"blue",
+"after",
+"north"
+];
+
+const second=[
+"hotel",
+"garden",
+"signal",
+"parade",
+"radio",
+"room",
+"theory",
+"club",
+"memory",
+"station",
+"weather",
+"cinema",
+"archive",
+"summer",
+"street"
+];
+
+document.getElementById(
+"bandBtn"
+).onclick=()=>{
+
+document.getElementById(
+"band"
+).textContent =
+
+first[
+Math.floor(Math.random()*first.length)
+]
++
+" "
++
+second[
+Math.floor(Math.random()*second.length)
+];
+
+};
 
 
 /* JOURNAL */
 
 const journal =
-  document.getElementById("journal");
+document.getElementById("journal");
 
 journal.value =
-  localStorage.getItem("nightfall-journal") || "";
+localStorage.getItem("nightfallJournal") || "";
 
-journal.addEventListener("input", () => {
+document.getElementById(
+"saveJournal"
+).onclick=()=>{
 
-  localStorage.setItem(
-    "nightfall-journal",
-    journal.value
-  );
+localStorage.setItem(
+"nightfallJournal",
+journal.value
+);
 
-});
+document.getElementById(
+"saved"
+).textContent="saved locally ✦";
+
+};
+
+document.getElementById(
+"clearJournal"
+).onclick=()=>{
+
+journal.value="";
+
+localStorage.removeItem(
+"nightfallJournal"
+);
+
+};
 
 </script>
 
