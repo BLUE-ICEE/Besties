@@ -2,146 +2,164 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Nightfall — Settings</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet" href="style.css">
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Nightfall · Settings</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
-<body class="page">
+<body>
 
-<div class="page-shell">
+<div class="page">
 
-  <header class="page-header">
+<header class="topbar page-header">
 
-    <a href="index.html" class="logo">
-      Nightfall
-    </a>
+<a class="brand" href="index.html">
+nightfall
+</a>
 
-    <a href="index.html" class="back">
-      back home
-    </a>
+<nav>
 
-  </header>
+<a href="games.html">games</a>
+<a href="videos.html">watch</a>
+<a href="facts.html">facts</a>
+<a href="little.html">little things</a>
+<a href="things.html">things</a>
 
+</nav>
 
-  <h1 class="page-title">
-    Settings
-  </h1>
-
-  <p class="page-subtitle">
-    Change the atmosphere. Nightfall remembers your choice on this device.
-  </p>
+</header>
 
 
-  <div class="section-title">
-    atmosphere
-  </div>
+<h1 class="page-title">
+settings
+</h1>
+
+<p class="sub">
+Change the atmosphere without destroying the quiet.
+</p>
 
 
-  <div class="theme-grid">
+<div class="theme-grid">
 
-    <button
-      class="theme"
-      onclick="setTheme('winter')">
+<button
+class="theme winter"
+data-theme="winter">
 
-      <div class="theme-preview winter"></div>
+<span>winter</span>
 
-      <span>Winter</span>
-
-    </button>
+</button>
 
 
-    <button
-      class="theme"
-      onclick="setTheme('autumn')">
+<button
+class="theme forest"
+data-theme="forest">
 
-      <div class="theme-preview autumn"></div>
+<span>forest</span>
 
-      <span>Autumn</span>
-
-    </button>
+</button>
 
 
-    <button
-      class="theme"
-      onclick="setTheme('forest')">
+<button
+class="theme autumn"
+data-theme="autumn">
 
-      <div class="theme-preview forest"></div>
+<span>autumn</span>
 
-      <span>Forest</span>
-
-    </button>
+</button>
 
 
-    <button
-      class="theme"
-      onclick="setTheme('space')">
+<button
+class="theme night"
+data-theme="night">
 
-      <div class="theme-preview space"></div>
+<span>night</span>
 
-      <span>Space</span>
-
-    </button>
+</button>
 
 
-    <button
-      class="theme"
-      onclick="setTheme('rose')">
+<button
+class="theme rose"
+data-theme="rose">
 
-      <div class="theme-preview rose"></div>
+<span>rose</span>
 
-      <span>Rose</span>
+</button>
 
-    </button>
-
-  </div>
+</div>
 
 
-  <div class="section-title">
-    about this version
-  </div>
+<div
+class="grid"
+style="margin-top:20px"
+>
 
 
-  <div class="grid">
+<section class="panel">
 
-    <div class="card">
+<span class="tag">
+clock
+</span>
 
-      <h3>Quiet by default</h3>
+<h2>
+New York time
+</h2>
 
-      <p>
-        The home screen is intentionally sparse.
-        The fun stuff isn't screaming at you the second you arrive.
-      </p>
+<p>
+The home screen uses the actual
+America/New_York timezone, so it
+automatically switches between EST
+and EDT when New York changes clocks.
+</p>
 
-    </div>
-
-
-    <div class="card">
-
-      <h3>New York time</h3>
-
-      <p>
-        The clock uses America/New_York,
-        including daylight-saving changes automatically.
-      </p>
-
-    </div>
+</section>
 
 
-    <div class="card">
+<section class="panel">
 
-      <h3>Your device</h3>
+<span class="tag">
+saved locally
+</span>
 
-      <p>
-        Themes and game scores are saved locally in your browser.
-      </p>
+<h2>
+No account needed
+</h2>
 
-    </div>
+<p>
+Themes, journal entries, game progress
+and preferences can stay in your browser.
+</p>
 
-  </div>
+</section>
+
+
+<section class="panel">
+
+<span class="tag">
+the vibe
+</span>
+
+<h2>
+Home stays quiet
+</h2>
+
+<p>
+The homepage is deliberately minimal.
+The games, videos, facts and weird little
+toys live on their own shelves.
+</p>
+
+</section>
+
+
+</div>
 
 </div>
 
